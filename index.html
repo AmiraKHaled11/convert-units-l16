@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Convert Units 1-6</title>
+<style>
+:root{--teal:#1d6f8a;--teal2:#2a87a5;--head:#e8f4f8;--ink:#1d2433;--orange:#f07b22;--ok:#2b8a3e;--bad:#d6336c;--bg:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:"Segoe UI",Arial,sans-serif;color:var(--ink)}
+header{background:var(--teal);color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:22px;margin:0;flex:1}
+.pill{background:#ffffff26;border-radius:20px;padding:5px 14px;font-weight:600}
+main{max-width:1250px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1.05fr 1fr;gap:18px}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:14px;box-shadow:0 2px 10px #0001;padding:18px 20px}
+.tag{color:var(--orange);font-size:24px;font-weight:300;margin:0 0 8px}
+.tag b{font-family:Georgia,serif;font-weight:900}
+.qtext{font-size:22px;line-height:1.55}
+.qtext .ask{font-weight:700;display:block;margin-top:8px}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.8em;margin:0 2px;line-height:1.05}
+.fr>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
+input{font-size:22px;padding:8px 12px;border:2px solid #c9d3df;border-radius:10px;width:200px}
+input:focus{outline:none;border-color:var(--teal2)}
+.unit{font-size:20px;font-weight:600;color:#555}
+button{font-size:17px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;cursor:pointer}
+.go{background:var(--teal);color:#fff}.hint{background:#fff3e6;color:#b45309}.nav{background:#e9eef4;color:#333}
+.fb{margin-top:14px;font-size:19px;border-radius:10px;padding:12px 14px;display:none;line-height:1.7}
+.fb.ok{display:block;background:#ebfbee;color:var(--ok)}.fb.bad{display:block;background:#fff0f6;color:var(--bad)}
+.steps{display:none;margin-top:10px;background:#f8f9fb;border-left:5px solid var(--orange);padding:10px 14px;font-size:19px;line-height:1.9}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.dot{width:30px;height:30px;border-radius:50%;background:#e2e8f0;display:grid;place-items:center;font-size:13px;font-weight:700;cursor:pointer}
+.dot.cur{outline:3px solid var(--teal2)}.dot.ok{background:#b2f2bb}.dot.bad{background:#fcc2d7}
+/* book-style conversion table */
+table.conv{width:100%;border-collapse:collapse;border:3px solid var(--teal);font-size:18px}
+.conv caption{background:var(--teal);color:#fff;font-size:22px;font-weight:700;padding:8px;caption-side:top;border:3px solid var(--teal);border-bottom:0}
+.conv th{background:var(--head);color:var(--teal);font-weight:700;padding:7px;border:2px solid var(--teal)}
+.conv td{border-left:2px solid var(--teal);border-right:2px solid var(--teal);padding:4px 10px;vertical-align:top}
+.conv tbody tr.grp td{border-top:2px solid var(--teal)}
+.conv td.eq{text-align:center;color:var(--teal);font-weight:700;width:40px}
+.conv td.type{width:150px}
+.conv tr.f{cursor:pointer;transition:background .2s}
+.conv tr.f:hover td:not(.type){background:#f1f8fb}
+.conv tr.f.lit td:not(.type){background:#fff3bf}
+.conv svg{display:block;margin-top:4px}
+.small{font-size:14px;color:#667;margin-top:8px}
+#end{display:none;text-align:center}
+#end h2{font-size:34px;color:var(--teal)}
+</style>
+</head>
+<body>
+<header><h1>Lesson 1-6 &middot; Convert Customary Measurement Units</h1><span class="pill" id="score"></span></header>
+<main>
+<section class="card" id="qcard">
+  <p class="tag" id="tag"></p>
+  <div class="qtext" id="qtext"></div>
+  <div class="row"><input id="ans" inputmode="decimal" placeholder="your answer" autocomplete="off"><span class="unit" id="unit"></span></div>
+  <div class="row"><button class="go" id="check">Check</button><button class="hint" id="hintb">Hint: light up the table</button><button class="nav" id="prev">&larr; Back</button><button class="nav" id="next">Next &rarr;</button></div>
+  <div class="small">Fractions are fine: type 1/2 or 33 1/3. Decimals too: 1.5</div>
+  <div class="fb" id="fb"></div>
+  <div class="steps" id="steps"></div>
+  <div class="dots" id="dots"></div>
+</section>
+<section class="card" id="end"></section>
+<section class="card">
+<table class="conv">
+<caption>Customary Conversions</caption>
+<thead><tr><th>Type of Measure</th><th>Larger Unit</th><th>&rarr;</th><th>Smaller Unit</th></tr></thead>
+<tbody>
+<tr class="f grp" data-k="ft"><td class="type" rowspan="3">Length
+<svg width="130" height="46" viewBox="0 0 130 46"><g transform="rotate(-18 65 23)"><rect x="4" y="16" width="122" height="16" rx="2" fill="#f5c542" stroke="#b8860b"/><g stroke="#333" stroke-width="1.5"><line x1="16" y1="16" x2="16" y2="23"/><line x1="30" y1="16" x2="30" y2="23"/><line x1="44" y1="16" x2="44" y2="23"/><line x1="58" y1="16" x2="58" y2="23"/><line x1="72" y1="16" x2="72" y2="23"/><line x1="86" y1="16" x2="86" y2="23"/><line x1="100" y1="16" x2="100" y2="23"/><line x1="114" y1="16" x2="114" y2="23"/></g></g></svg></td><td>1 foot (ft)</td><td class="eq">=</td><td>12 inches (in.)</td></tr>
+<tr class="f" data-k="yd"><td>1 yard (yd)</td><td class="eq">=</td><td>3 feet</td></tr>
+<tr class="f" data-k="mi"><td>1 mile (mi)</td><td class="eq">=</td><td>5,280 feet</td></tr>
+<tr class="f grp" data-k="lb"><td class="type" rowspan="2">Weight
+<svg width="130" height="46" viewBox="0 0 130 46"><rect x="8" y="10" width="40" height="5" rx="2" fill="#5bb5d6"/><rect x="82" y="10" width="40" height="5" rx="2" fill="#5bb5d6"/><rect x="26" y="15" width="4" height="8" fill="#2d4f86"/><rect x="100" y="15" width="4" height="8" fill="#2d4f86"/><rect x="20" y="20" width="90" height="5" fill="#2d4f86"/><path d="M50 44 L56 24 H74 L80 44Z" fill="#2d4f86"/></svg></td><td>1 pound (lb)</td><td class="eq">=</td><td>16 ounces (oz)</td></tr>
+<tr class="f" data-k="T"><td>1 ton (T)</td><td class="eq">=</td><td>2,000 pounds</td></tr>
+<tr class="f grp" data-k="c"><td class="type" rowspan="4">Capacity
+<svg width="90" height="70" viewBox="0 0 90 70"><path d="M14 6 H62 V64 H14Z" fill="#e7f5ff" stroke="#9aa9b8" stroke-width="2"/><rect x="15" y="30" width="46" height="33" fill="#74c0fc"/><path d="M62 16 q20 2 18 18 q-2 14 -18 14" fill="none" stroke="#9aa9b8" stroke-width="4"/><g stroke="#333" stroke-width="1.5"><line x1="20" y1="14" x2="30" y2="14"/><line x1="20" y1="24" x2="28" y2="24"/><line x1="20" y1="34" x2="30" y2="34"/><line x1="20" y1="44" x2="28" y2="44"/><line x1="20" y1="54" x2="30" y2="54"/></g></svg></td><td>1 cup (c)</td><td class="eq">=</td><td>8 fluid ounces (fl oz)</td></tr>
+<tr class="f" data-k="pt"><td>1 pint (pt)</td><td class="eq">=</td><td>2 cups</td></tr>
+<tr class="f" data-k="qt"><td>1 quart (qt)</td><td class="eq">=</td><td>2 pints</td></tr>
+<tr class="f" data-k="gal"><td>1 gallon (gal)</td><td class="eq">=</td><td>4 quarts</td></tr>
+</tbody></table>
+<div class="small">Tap a row to highlight it while you work.</div>
+</section>
+</main>
+<script>
+const F=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+// [tag, question html, ask, unit, answer, table rows, worked steps]
+const Q=[
+['<b>Example 1</b> Larger to smaller',`Marco mixes ${F(1,2)} gallon of fertilizer into the soil before planting tulip bulbs.`,'How many cups of fertilizer is that?','cups',8,['gal','qt','pt'],
+ `${F(1,2)} gal &times; 4 = 2 qt<br>2 qt &times; 2 = 4 pt<br>4 pt &times; 2 = <b>8 cups</b>`],
+['<b>Check</b>',`How many ounces are in ${F(1,4)} pound?`,'','oz',4,['lb'],`${F(1,4)} &times; 16 = <b>4 oz</b>`],
+['<b>Example 2</b> Smaller to larger','A male hippopotamus can weigh as much as 9,920 pounds.','How much is this weight in tons?','T',4.96,['T'],`9,920 &divide; 2,000 = <b>4.96 T</b>`],
+['<b>Check</b>','How many yards are in 54 inches?','','yd',1.5,['ft','yd'],`1 yd = 3 ft = 36 in.<br>54 &divide; 36 = <b>1.5 yd</b> (1${F(1,2)} yd)`],
+['<b>Check</b>','On Tuesday Joaquin drank 6 glasses of water with 10 fluid ounces in each. His goal was 2 quarts.','How many more fluid ounces does he need to drink?','fl oz',4,['qt','pt','c'],
+ `2 qt = 4 pt = 8 c = 64 fl oz<br>He drank 6 &times; 10 = 60 fl oz<br>64 &minus; 60 = <b>4 fl oz</b>`],
+['<b>1</b>',`Mrs. Menary made 4${F(1,2)} quarts of lemonade for a school party.`,'How many fluid ounces did she make?','fl oz',144,['qt','pt','c'],
+ `4${F(1,2)} qt &times; 2 = 9 pt<br>9 pt &times; 2 = 18 c<br>18 c &times; 8 = <b>144 fl oz</b>`],
+['<b>2</b>','A class walked 2.5 miles in a walk-a-thon.','How many yards did the class walk?','yd',4400,['mi','yd'],
+ `2.5 &times; 5,280 = 13,200 ft<br>13,200 &divide; 3 = <b>4,400 yd</b>`],
+['<b>3</b>',`The Martinez family has ${F(3,4)} gallon of orange juice in the fridge.`,'How many cups of orange juice is that?','cups',12,['gal','qt','pt'],
+ `${F(3,4)} &times; 4 = 3 qt<br>3 qt &times; 2 = 6 pt<br>6 pt &times; 2 = <b>12 cups</b>`],
+['<b>4</b>',`A grand piano can weigh ${F(1,2)} ton.`,'How many ounces can it weigh?','oz',16000,['T','lb'],
+ `${F(1,2)} &times; 2,000 = 1,000 lb<br>1,000 &times; 16 = <b>16,000 oz</b>`],
+['<b>5</b>','A female hippopotamus can weigh 48,000 ounces.','How many tons can she weigh?','T',1.5,['lb','T'],
+ `48,000 &divide; 16 = 3,000 lb<br>3,000 &divide; 2,000 = <b>1.5 T</b> (1${F(1,2)} T)`],
+['<b>6</b>',"Tracey's best kick at soccer practice travelled 1,200 inches.",'How many yards did she kick the ball?','yd',100/3,['ft','yd'],
+ `1 yd = 36 in.<br>1,200 &divide; 36 = <b>33${F(1,3)} yd</b>`],
+['<b>7</b>','An elephant can drink up to 6,400 fluid ounces of water a day.','How many gallons is that?','gal',50,['c','pt','qt','gal'],
+ `6,400 &divide; 8 = 800 c<br>800 &divide; 2 = 400 pt<br>400 &divide; 2 = 200 qt<br>200 &divide; 4 = <b>50 gal</b>`],
+['<b>8</b>','An ice cream recipe uses 56 fluid ounces of milk.','How many pints of milk is that?','pt',3.5,['c','pt'],
+ `56 &divide; 8 = 7 c<br>7 &divide; 2 = <b>3.5 pt</b> (3${F(1,2)} pt)`],
+['<b>9</b>',`One quart of strawberries weighs about 2 pounds.`,`About how many quarts would weigh ${F(1,4)} ton?`,'qt',250,['T'],
+ `${F(1,4)} &times; 2,000 = 500 lb<br>500 &divide; 2 = <b>250 quarts</b>`],
+['<b>10</b> Open Response',`A mini juice box holds 4 fluid ounces. You need 2${F(1,2)} quarts of juice.`,'How many mini juice boxes do you need?','boxes',20,['qt','pt','c'],
+ `2${F(1,2)} qt = 5 pt = 10 c = 80 fl oz<br>80 &divide; 4 = <b>20 boxes</b>`]
+];
+// extra practice: random conversions built from the page 47 table
+const CH=[
+ {u:['inches','feet','yards'],k:['ft','yd'],f:[12,3],ctx:['A ribbon is','A shelf is','A garden path is']},
+ {u:['feet','miles'],k:['mi'],f:[5280],ctx:['A running track loop is','A bike trail is']},
+ {u:['ounces','pounds','tons'],k:['lb','T'],f:[16,2000],ctx:['A bag of rice weighs','A baby camel weighs','A truck load weighs']},
+ {u:['fluid ounces','cups','pints','quarts','gallons'],k:['c','pt','qt','gal'],f:[8,2,2,4],ctx:['A jug holds','A water cooler holds','A pot of soup holds']}];
+const ABBR={'inches':'in.','feet':'ft','yards':'yd','miles':'mi','ounces':'oz','pounds':'lb','tons':'T','fluid ounces':'fl oz','cups':'c','pints':'pt','quarts':'qt','gallons':'gal'};
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+function nice(x){const w=Math.floor(x),r=+(x-w).toFixed(4);const fr={0.5:[1,2],0.25:[1,4],0.75:[3,4]}[r];
+ if(!r)return w.toLocaleString();return fr?(w?w.toLocaleString():'')+F(...fr):x.toLocaleString()}
+function gen(){const c=rnd(CH);let i=Math.floor(Math.random()*c.u.length),j;do j=Math.floor(Math.random()*c.u.length);while(j==i||Math.abs(i-j)>2);
+ const lo=Math.min(i,j),hi=Math.max(i,j);let mult=1;for(let t=lo;t<hi;t++)mult*=c.f[t];
+ const big=rnd([1,2,3,4,5,6,8,10,1.5,2.5,0.5,0.25,0.75]);const smallV=big*mult;
+ const down=i>j;// from larger (i) to smaller (j)
+ const from=down?big:smallV,to=down?smallV:big;let steps=[],v=from;
+ if(down)for(let t=i-1;t>=j;t--){const n=v*c.f[t];steps.push(`${nice(v)} ${ABBR[c.u[t+1]]} &times; ${c.f[t].toLocaleString()} = ${nice(n)} ${ABBR[c.u[t]]}`);v=n}
+ else for(let t=i;t<j;t++){const n=v/c.f[t];steps.push(`${nice(v)} ${ABBR[c.u[t]]} &divide; ${c.f[t].toLocaleString()} = ${nice(n)} ${ABBR[c.u[t+1]]}`);v=n}
+ steps[steps.length-1]=steps[steps.length-1].replace(/= (.*)$/,'= <b>$1</b>');
+ steps.unshift(down?'Larger &rarr; smaller: <b>multiply</b>':'Smaller &rarr; larger: <b>divide</b>');
+ const keys=c.k.slice(lo,hi);
+ return ['<b>Extra practice</b>',`${rnd(c.ctx)} ${nice(from)} ${c.u[i]}.`,`How many ${c.u[j]} is that?`,ABBR[c.u[j]],to,keys,steps.join('<br>')]}
+const BOOK=Q.length;for(let n=0;n<10;n++)Q.push(gen());
+const $=id=>document.getElementById(id);
+let cur=0;const st=Q.map(()=>({done:false,ok:false,tries:0,val:''}));
+function parse(s){s=s.replace(/,/g,'').trim();let m;
+ if(m=s.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)$/))return +m[1]+m[2]/m[3];
+ if(m=s.match(/^(-?\d*\.?\d+)\s*\/\s*(\d*\.?\d+)$/))return m[1]/m[2];
+ if(/^-?\d*\.?\d+$/.test(s))return +s;return NaN}
+function light(keys){document.querySelectorAll('tr.f').forEach(r=>r.classList.toggle('lit',keys.includes(r.dataset.k)))}
+function show(){const q=Q[cur],s=st[cur];
+ $('tag').innerHTML=q[0];$('qtext').innerHTML=q[1]+(q[2]?`<span class="ask">${q[2]}</span>`:'');
+ $('unit').textContent=q[3];$('ans').value=s.val;light([]);
+ const fb=$('fb');fb.className='fb';$('steps').style.display='none';
+ if(s.done){fb.className='fb '+(s.ok?'ok':'bad');fb.innerHTML=s.ok?'Correct!':'Here is the method:';$('steps').innerHTML=q[6];$('steps').style.display='block';light(q[5])}
+ $('dots').innerHTML=Q.map((x,i)=>`<div class="dot ${i==cur?'cur':''} ${st[i].done?(st[i].ok?'ok':'bad'):''}" data-i="${i}">${i<5?['E1','C','E2','C','C'][i]:i<BOOK?i-4:'P'+(i-BOOK+1)}</div>`).join('');
+ $('score').textContent=`Score ${st.filter(x=>x.ok).length} / ${Q.length}`;$('ans').focus()}
+$('dots').onclick=e=>{if(e.target.dataset.i){cur=+e.target.dataset.i;show()}};
+$('check').onclick=()=>{const q=Q[cur],s=st[cur];if(s.done)return;const v=parse($('ans').value);s.val=$('ans').value;
+ if(isNaN(v)){$('fb').className='fb bad';$('fb').innerHTML='Type a number, e.g. 12 or 1/2 or 33 1/3';return}
+ if(Math.abs(v-q[4])<0.01){s.done=true;s.ok=true;show();if(st.every(x=>x.done))setTimeout(end,900);return}
+ s.tries++;if(s.tries<2){$('fb').className='fb bad';$('fb').innerHTML='Not yet. Look at the lit rows in the table and try once more.';light(q[5])}
+ else{s.done=true;show();if(st.every(x=>x.done))setTimeout(end,1500)}};
+$('ans').onkeydown=e=>{if(e.key=='Enter')$('check').click()};
+$('hintb').onclick=()=>light(Q[cur][5]);
+$('next').onclick=()=>{cur=(cur+1)%Q.length;show()};$('prev').onclick=()=>{cur=(cur+Q.length-1)%Q.length;show()};
+document.querySelectorAll('tr.f').forEach(r=>r.onclick=()=>r.classList.toggle('lit'));
+function end(){const n=st.filter(x=>x.ok).length;$('qcard').style.display='none';const e=$('end');e.style.display='block';
+ e.innerHTML=`<h2>Finished!</h2><p style="font-size:24px">You got <b>${n} / ${Q.length}</b></p><p style="font-size:18px">Larger &rarr; smaller: <b>multiply</b>.<br>Smaller &rarr; larger: <b>divide</b>.</p><button class="go" onclick="location.reload()">Start again</button> <button class="hint" onclick="more()">10 more practice questions</button>`}
+function more(){const s=Q.length;for(let n=0;n<10;n++){Q.push(gen());st.push({done:false,ok:false,tries:0,val:''})}cur=s;$('end').style.display='none';$('qcard').style.display='block';show()}
+show();
+</script>
+</body>
+</html>
