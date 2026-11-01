@@ -52,6 +52,10 @@ table.conv{width:100%;border-collapse:collapse;border:3px solid var(--teal);font
 <body>
 <header><h1>Lesson 1-6 &middot; Convert Customary Measurement Units</h1><span class="pill" id="score"></span></header>
 <main>
+<section class="card" id="rule" style="grid-column:1/-1">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><p class="tag" style="margin:0"><b>The Rule</b> Visit your neighbour</p><button class="nav" onclick="const r=document.getElementById('ruleSvg');r.style.display=r.style.display=='none'?'block':'none'">Show / hide</button></div>
+<div id="ruleSvg"></div>
+</section>
 <section class="card" id="qcard">
   <p class="tag" id="tag"></p>
   <div class="qtext" id="qtext"></div>
@@ -164,6 +168,39 @@ document.querySelectorAll('tr.f').forEach(r=>r.onclick=()=>r.classList.toggle('l
 function end(){const n=st.filter(x=>x.ok).length;$('qcard').style.display='none';const e=$('end');e.style.display='block';
  e.innerHTML=`<h2>Finished!</h2><p style="font-size:24px">You got <b>${n} / ${Q.length}</b></p><p style="font-size:18px">Larger &rarr; smaller: <b>multiply</b>.<br>Smaller &rarr; larger: <b>divide</b>.</p><button class="go" onclick="location.reload()">Start again</button> <button class="hint" onclick="more()">10 more practice questions</button>`}
 function more(){const s=Q.length;for(let n=0;n<10;n++){Q.push(gen());st.push({done:false,ok:false,tries:0,val:''})}cur=s;$('end').style.display='none';$('qcard').style.display='block';show()}
+(function(){
+const rows=[
+ {name:'Capacity',col:'#1c7ed6',u:['gallon','quart','pint','cup','fl oz'],f:[4,2,2,8]},
+ {name:'Weight',col:'#7048e8',u:['ton','pound','ounce'],f:['2,000',16]},
+ {name:'Length',col:'#2b8a3e',u:['mile','foot','inch'],f:['5,280',12],extra:true}];
+const W=1100;let s=`<svg viewBox="0 0 ${W} 700" width="100%" style="max-width:1100px;display:block;margin:auto;font-family:Segoe UI,Arial">
+<defs><marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#e8590c"/></marker>
+<marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#1864ab"/></marker></defs>
+<rect x="10" y="8" width="530" height="62" rx="14" fill="#fff4e6" stroke="#e8590c" stroke-width="3"/>
+<text x="275" y="36" text-anchor="middle" font-size="22" font-weight="800" fill="#e8590c">LARGER &#8594; SMALLER = MULTIPLY &#215;</text>
+<text x="275" y="60" text-anchor="middle" font-size="16" fill="#7a3e00">a big unit breaks into MANY small units</text>
+<rect x="560" y="8" width="530" height="62" rx="14" fill="#e7f5ff" stroke="#1864ab" stroke-width="3"/>
+<text x="825" y="36" text-anchor="middle" font-size="22" font-weight="800" fill="#1864ab">SMALLER &#8594; LARGER = DIVIDE &#247;</text>
+<text x="825" y="60" text-anchor="middle" font-size="16" fill="#0b3d6b">many small units pack into FEW big units</text>`;
+let y=100;
+rows.forEach(r=>{const n=r.u.length,gap=(W-280)/(n-1);
+ s+=`<text x="12" y="${y+80}" font-size="20" font-weight="800" fill="${r.col}">${r.name}</text>`;
+ r.u.forEach((u,i)=>{const x=150+i*gap,sz=78-i*(30/(n-1)),cy=y+80;
+  // a little house that shrinks as the unit gets smaller
+  s+=`<g><path d="M${x-sz/2},${cy-sz/4} L${x},${cy-sz*0.75} L${x+sz/2},${cy-sz/4}Z" fill="${r.col}"/>
+  <rect x="${x-sz/2+4}" y="${cy-sz/4}" width="${sz-8}" height="${sz*0.62}" rx="5" fill="#fff" stroke="${r.col}" stroke-width="3"/>
+  <text x="${x}" y="${cy+sz*0.17}" text-anchor="middle" font-size="${Math.max(13,sz/4.6)}" font-weight="700" fill="#1d2433">${u}</text></g>`;
+  if(i<n-1){const x1=x+sz/2+6,x2=150+(i+1)*gap-(78-(i+1)*(30/(n-1)))/2-6,mx=(x1+x2)/2;
+   s+=`<path d="M${x1},${cy-28} Q${mx},${cy-70} ${x2},${cy-28}" fill="none" stroke="#e8590c" stroke-width="3.5" marker-end="url(#ah)"/>
+   <rect x="${mx-38}" y="${cy-80}" width="76" height="26" rx="13" fill="#e8590c"/><text x="${mx}" y="${cy-61}" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">&#215; ${r.f[i]}</text>
+   <path d="M${x2},${cy+46} Q${mx},${cy+88} ${x1},${cy+46}" fill="none" stroke="#1864ab" stroke-width="3.5" marker-end="url(#ab)"/>
+   <rect x="${mx-38}" y="${cy+64}" width="76" height="26" rx="13" fill="#1864ab"/><text x="${mx}" y="${cy+83}" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">&#247; ${r.f[i]}</text>`}});
+ if(r.extra)s+=`<text x="${W-12}" y="${y+178}" text-anchor="end" font-size="15" fill="#555">also: 1 yard = 3 feet &#160;&#160;(yard &#8596; foot: &#215; 3 / &#247; 3)</text>`;
+ y+=185});
+// don't jump banner
+s+=`<rect x="10" y="${y+2}" width="${W-20}" height="46" rx="23" fill="#fff9db" stroke="#f08c00" stroke-width="2.5"/>
+<text x="${W/2}" y="${y+33}" text-anchor="middle" font-size="21" font-weight="800" fill="#d9480f">Don't jump! Always visit your neighbour, one step at a time: gallon &#8594; quart &#8594; pint &#8594; cup</text>`;
+s+='</svg>';document.getElementById('ruleSvg').innerHTML=s})();
 show();
 </script>
 </body>
