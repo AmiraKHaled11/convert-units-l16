@@ -18,7 +18,11 @@ main{max-width:1250px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .tag b{font-family:Georgia,serif;font-weight:900}
 .qtext{font-size:22px;line-height:1.55}
 .qtext .ask{font-weight:700;display:block;margin-top:8px}
-.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.8em;margin:0 2px;line-height:1.05}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.opt{font-size:24px;font-weight:600;background:#fff;border:3px solid #c9d3df;border-radius:12px;padding:12px;min-height:72px;color:var(--ink)}
+.opt:hover{border-color:var(--teal2)}.opt.right{background:#ebfbee;border-color:var(--ok)}.opt.wrong{background:#fff0f6;border-color:var(--bad)}
+.opt .u{font-size:18px;color:#555;font-weight:400}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.85em;margin:0 2px;line-height:1.05}
 .fr>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
 input{font-size:22px;padding:8px 12px;border:2px solid #c9d3df;border-radius:10px;width:200px}
@@ -59,9 +63,9 @@ table.conv{width:100%;border-collapse:collapse;border:3px solid var(--teal);font
 <section class="card" id="qcard">
   <p class="tag" id="tag"></p>
   <div class="qtext" id="qtext"></div>
-  <div class="row"><input id="ans" inputmode="decimal" placeholder="your answer" autocomplete="off"><span class="unit" id="unit"></span></div>
-  <div class="row"><button class="go" id="check">Check</button><button class="hint" id="hintb">Hint: light up the table</button><button class="nav" id="prev">&larr; Back</button><button class="nav" id="next">Next &rarr;</button></div>
-  <div class="small">Fractions are fine: type 1/2 or 33 1/3. Decimals too: 1.5</div>
+  <div class="opts" id="opts"></div>
+  <div class="row"><button class="hint" id="hintb">Hint: light up the table</button><button class="nav" id="prev">&larr; Back</button><button class="nav" id="next">Next &rarr;</button></div>
+  <div class="small">Choose the correct answer.</div>
   <div class="fb" id="fb"></div>
   <div class="steps" id="steps"></div>
   <div class="dots" id="dots"></div>
@@ -127,8 +131,8 @@ const CH=[
  {u:['fluid ounces','cups','pints','quarts','gallons'],k:['c','pt','qt','gal'],f:[8,2,2,4],ctx:['A jug holds','A water cooler holds','A pot of soup holds']}];
 const ABBR={'inches':'in.','feet':'ft','yards':'yd','miles':'mi','ounces':'oz','pounds':'lb','tons':'T','fluid ounces':'fl oz','cups':'c','pints':'pt','quarts':'qt','gallons':'gal'};
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
-function nice(x){const w=Math.floor(x),r=+(x-w).toFixed(4);const fr={0.5:[1,2],0.25:[1,4],0.75:[3,4]}[r];
- if(!r)return w.toLocaleString();return fr?(w?w.toLocaleString():'')+F(...fr):x.toLocaleString()}
+function nice(x){x=Math.round(x*1e6)/1e6;const w=Math.floor(x),r=x-w,t=Math.round(r*12);const fr=Math.abs(r*12-t)<1e-4?{6:[1,2],3:[1,4],9:[3,4],4:[1,3],8:[2,3]}[t]:null;
+ if(r<1e-6)return w.toLocaleString();return fr?(w?w.toLocaleString():'')+F(...fr):x.toLocaleString()}
 function gen(){const c=rnd(CH);let i=Math.floor(Math.random()*c.u.length),j;do j=Math.floor(Math.random()*c.u.length);while(j==i||Math.abs(i-j)>2);
  const lo=Math.min(i,j),hi=Math.max(i,j);let mult=1;for(let t=lo;t<hi;t++)mult*=c.f[t];
  const big=rnd([1,2,3,4,5,6,8,10,1.5,2.5,0.5,0.25,0.75]);const smallV=big*mult;
@@ -150,18 +154,20 @@ function parse(s){s=s.replace(/,/g,'').trim();let m;
 function light(keys){document.querySelectorAll('tr.f').forEach(r=>r.classList.toggle('lit',keys.includes(r.dataset.k)))}
 function show(){const q=Q[cur],s=st[cur];
  $('tag').innerHTML=q[0];$('qtext').innerHTML=q[1]+(q[2]?`<span class="ask">${q[2]}</span>`:'');
- $('unit').textContent=q[3];$('ans').value=s.val;light([]);
+ light([]);if(!s.opts)s.opts=options(q[4]);
+ $('opts').innerHTML=s.opts.map((v,k)=>`<button class="opt ${s.done&&Math.abs(v-q[4])<1e-6?'right':''} ${s.done&&s.pick===k&&!s.ok?'wrong':''}" data-k="${k}">${nice(v)} <span class="u">${q[3]}</span></button>`).join('');
  const fb=$('fb');fb.className='fb';$('steps').style.display='none';
  if(s.done){fb.className='fb '+(s.ok?'ok':'bad');fb.innerHTML=s.ok?'Correct!':'Here is the method:';$('steps').innerHTML=q[6];$('steps').style.display='block';light(q[5])}
  $('dots').innerHTML=Q.map((x,i)=>`<div class="dot ${i==cur?'cur':''} ${st[i].done?(st[i].ok?'ok':'bad'):''}" data-i="${i}">${i<BOOK?i+1:'P'+(i-BOOK+1)}</div>`).join('');
- $('score').textContent=`Score ${st.filter(x=>x.ok).length} / ${Q.length}`;$('ans').focus()}
+ $('score').textContent=`Score ${st.filter(x=>x.ok).length} / ${Q.length}`}
 $('dots').onclick=e=>{if(e.target.dataset.i){cur=+e.target.dataset.i;show()}};
-$('check').onclick=()=>{const q=Q[cur],s=st[cur];if(s.done)return;const v=parse($('ans').value);s.val=$('ans').value;
- if(isNaN(v)){$('fb').className='fb bad';$('fb').innerHTML='Type a number, e.g. 12 or 1/2 or 33 1/3';return}
- if(Math.abs(v-q[4])<0.01){s.done=true;s.ok=true;show();if(st.every(x=>x.done))setTimeout(end,900);return}
- s.tries++;if(s.tries<2){$('fb').className='fb bad';$('fb').innerHTML='Not yet. Look at the lit rows in the table and try once more.';light(q[5])}
- else{s.done=true;show();if(st.every(x=>x.done))setTimeout(end,1500)}};
-$('ans').onkeydown=e=>{if(e.key=='Enter')$('check').click()};
+function clean(x){const t=Math.round(x*12);return x>0&&x<1e6&&Math.abs(x*12-t)<1e-6&&[0,3,4,6,8,9].includes(t%12)}
+function options(a){const fs=[2,3,4,8,12,16,36,2000,5280],c=new Set();
+ fs.forEach(f=>{[a*f,a/f].forEach(x=>{if(clean(x)&&Math.abs(x-a)>1e-6)c.add(Math.round(x*12)/12)})});
+ [a+1,a*10,a+a/2].forEach(x=>{if(clean(x))c.add(Math.round(x*12)/12)});
+ const w=[...c].sort(()=>Math.random()-.5).slice(0,3);w.push(a);return w.sort(()=>Math.random()-.5)}
+$('opts').onclick=e=>{const b=e.target.closest('.opt');if(!b)return;const q=Q[cur],s=st[cur];if(s.done)return;
+ s.pick=+b.dataset.k;s.done=true;s.ok=Math.abs(s.opts[s.pick]-q[4])<1e-6;show();if(st.every(x=>x.done))setTimeout(end,1500)};
 $('hintb').onclick=()=>light(Q[cur][5]);
 $('next').onclick=()=>{cur=(cur+1)%Q.length;show()};$('prev').onclick=()=>{cur=(cur+Q.length-1)%Q.length;show()};
 document.querySelectorAll('tr.f').forEach(r=>r.onclick=()=>r.classList.toggle('lit'));
