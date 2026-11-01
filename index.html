@@ -86,35 +86,34 @@ table.conv{width:100%;border-collapse:collapse;border:3px solid var(--teal);font
 </main>
 <script>
 const F=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
-// [tag, question html, ask, unit, answer, table rows, worked steps]
 const Q=[
-['<b>Example 1</b> Larger to smaller',`Marco mixes ${F(1,2)} gallon of fertilizer into the soil before planting tulip bulbs.`,'How many cups of fertilizer is that?','cups',8,['gal','qt','pt'],
- `${F(1,2)} gal &times; 4 = 2 qt<br>2 qt &times; 2 = 4 pt<br>4 pt &times; 2 = <b>8 cups</b>`],
-['<b>Check</b>',`How many ounces are in ${F(1,4)} pound?`,'','oz',4,['lb'],`${F(1,4)} &times; 16 = <b>4 oz</b>`],
-['<b>Example 2</b> Smaller to larger','A male hippopotamus can weigh as much as 9,920 pounds.','How much is this weight in tons?','T',4.96,['T'],`9,920 &divide; 2,000 = <b>4.96 T</b>`],
-['<b>Check</b>','How many yards are in 54 inches?','','yd',1.5,['ft','yd'],`1 yd = 3 ft = 36 in.<br>54 &divide; 36 = <b>1.5 yd</b> (1${F(1,2)} yd)`],
-['<b>Check</b>','On Tuesday Joaquin drank 6 glasses of water with 10 fluid ounces in each. His goal was 2 quarts.','How many more fluid ounces does he need to drink?','fl oz',4,['qt','pt','c'],
- `2 qt = 4 pt = 8 c = 64 fl oz<br>He drank 6 &times; 10 = 60 fl oz<br>64 &minus; 60 = <b>4 fl oz</b>`],
-['<b>1</b>',`Mrs. Menary made 4${F(1,2)} quarts of lemonade for a school party.`,'How many fluid ounces did she make?','fl oz',144,['qt','pt','c'],
- `4${F(1,2)} qt &times; 2 = 9 pt<br>9 pt &times; 2 = 18 c<br>18 c &times; 8 = <b>144 fl oz</b>`],
-['<b>2</b>','A class walked 2.5 miles in a walk-a-thon.','How many yards did the class walk?','yd',4400,['mi','yd'],
- `2.5 &times; 5,280 = 13,200 ft<br>13,200 &divide; 3 = <b>4,400 yd</b>`],
-['<b>3</b>',`The Martinez family has ${F(3,4)} gallon of orange juice in the fridge.`,'How many cups of orange juice is that?','cups',12,['gal','qt','pt'],
- `${F(3,4)} &times; 4 = 3 qt<br>3 qt &times; 2 = 6 pt<br>6 pt &times; 2 = <b>12 cups</b>`],
-['<b>4</b>',`A grand piano can weigh ${F(1,2)} ton.`,'How many ounces can it weigh?','oz',16000,['T','lb'],
- `${F(1,2)} &times; 2,000 = 1,000 lb<br>1,000 &times; 16 = <b>16,000 oz</b>`],
-['<b>5</b>','A female hippopotamus can weigh 48,000 ounces.','How many tons can she weigh?','T',1.5,['lb','T'],
- `48,000 &divide; 16 = 3,000 lb<br>3,000 &divide; 2,000 = <b>1.5 T</b> (1${F(1,2)} T)`],
-['<b>6</b>',"Tracey's best kick at soccer practice travelled 1,200 inches.",'How many yards did she kick the ball?','yd',100/3,['ft','yd'],
- `1 yd = 36 in.<br>1,200 &divide; 36 = <b>33${F(1,3)} yd</b>`],
-['<b>7</b>','An elephant can drink up to 6,400 fluid ounces of water a day.','How many gallons is that?','gal',50,['c','pt','qt','gal'],
- `6,400 &divide; 8 = 800 c<br>800 &divide; 2 = 400 pt<br>400 &divide; 2 = 200 qt<br>200 &divide; 4 = <b>50 gal</b>`],
-['<b>8</b>','An ice cream recipe uses 56 fluid ounces of milk.','How many pints of milk is that?','pt',3.5,['c','pt'],
- `56 &divide; 8 = 7 c<br>7 &divide; 2 = <b>3.5 pt</b> (3${F(1,2)} pt)`],
-['<b>9</b>',`One quart of strawberries weighs about 2 pounds.`,`About how many quarts would weigh ${F(1,4)} ton?`,'qt',250,['T'],
- `${F(1,4)} &times; 2,000 = 500 lb<br>500 &divide; 2 = <b>250 quarts</b>`],
-['<b>10</b> Open Response',`A mini juice box holds 4 fluid ounces. You need 2${F(1,2)} quarts of juice.`,'How many mini juice boxes do you need?','boxes',20,['qt','pt','c'],
- `2${F(1,2)} qt = 5 pt = 10 c = 80 fl oz<br>80 &divide; 4 = <b>20 boxes</b>`]
+['<b>Question 1</b> Larger to smaller',`Noura makes 1${F(1,2)} gallons of laban for a family lunch.`,'How many cups of laban is that?','cups',24,['gal','qt','pt'],
+ `1${F(1,2)} gal &times; 4 = 6 qt<br>6 qt &times; 2 = 12 pt<br>12 pt &times; 2 = <b>24 cups</b>`],
+['<b>Question 2</b>',`A box of dates weighs ${F(1,2)} pound.`,'How many ounces is that?','oz',8,['lb'],`${F(1,2)} &times; 16 = <b>8 oz</b>`],
+['<b>Question 3</b> Smaller to larger','A water tanker truck in Al Khobar weighs 13,000 pounds.','How many tons is that?','T',6.5,['T'],`13,000 &divide; 2,000 = <b>6.5 T</b> (6${F(1,2)} T)`],
+['<b>Question 4</b>','Sara buys 90 inches of fabric for a costume.','How many yards is that?','yd',2.5,['ft','yd'],`1 yd = 3 ft = 36 in.<br>90 &divide; 36 = <b>2.5 yd</b> (2${F(1,2)} yd)`],
+['<b>Question 5</b>','Reem drank 5 glasses of water with 12 fluid ounces in each. Her goal is 3 quarts.','How many more fluid ounces does she need?','fl oz',36,['qt','pt','c'],
+ `3 qt = 6 pt = 12 c = 96 fl oz<br>She drank 5 &times; 12 = 60 fl oz<br>96 &minus; 60 = <b>36 fl oz</b>`],
+['<b>Question 6</b>',`Lama made 2${F(1,4)} quarts of mango juice.`,'How many fluid ounces is that?','fl oz',72,['qt','pt','c'],
+ `2${F(1,4)} qt &times; 2 = 4${F(1,2)} pt<br>4${F(1,2)} pt &times; 2 = 9 c<br>9 c &times; 8 = <b>72 fl oz</b>`],
+['<b>Question 7</b>','Maryam walked 1.5 miles along the Corniche.','How many yards did she walk?','yd',2640,['mi','yd'],
+ `1.5 &times; 5,280 = 7,920 ft<br>7,920 &divide; 3 = <b>2,640 yd</b>`],
+['<b>Question 8</b>',`A recipe needs ${F(1,4)} gallon of milk.`,'How many cups is that?','cups',4,['gal','qt','pt'],
+ `${F(1,4)} &times; 4 = 1 qt<br>1 qt &times; 2 = 2 pt<br>2 pt &times; 2 = <b>4 cups</b>`],
+['<b>Question 9</b>',`A camel can weigh ${F(3,4)} ton.`,'How many ounces can it weigh?','oz',24000,['T','lb'],
+ `${F(3,4)} &times; 2,000 = 1,500 lb<br>1,500 &times; 16 = <b>24,000 oz</b>`],
+['<b>Question 10</b>','A small car weighs 40,000 ounces.','How many tons is that?','T',1.25,['lb','T'],
+ `40,000 &divide; 16 = 2,500 lb<br>2,500 &divide; 2,000 = <b>1.25 T</b> (1${F(1,4)} T)`],
+['<b>Question 11</b>','A school hallway is 1,080 inches long.','How many yards long is it?','yd',30,['ft','yd'],
+ `1 yd = 36 in.<br>1,080 &divide; 36 = <b>30 yd</b>`],
+['<b>Question 12</b>','A garden water tank holds 3,200 fluid ounces.','How many gallons does it hold?','gal',25,['c','pt','qt','gal'],
+ `3,200 &divide; 8 = 400 c<br>400 &divide; 2 = 200 pt<br>200 &divide; 2 = 100 qt<br>100 &divide; 4 = <b>25 gal</b>`],
+['<b>Question 13</b>','A cake recipe uses 40 fluid ounces of milk.','How many pints is that?','pt',2.5,['c','pt'],
+ `40 &divide; 8 = 5 c<br>5 &divide; 2 = <b>2.5 pt</b> (2${F(1,2)} pt)`],
+['<b>Question 14</b>',`Each bag of rice weighs 5 pounds.`,`How many bags weigh ${F(1,2)} ton altogether?`,'bags',200,['T'],
+ `${F(1,2)} &times; 2,000 = 1,000 lb<br>1,000 &divide; 5 = <b>200 bags</b>`],
+['<b>Question 15</b>','A juice box holds 6 fluid ounces. The class needs 3 quarts of juice.','How many juice boxes are needed?','boxes',16,['qt','pt','c'],
+ `3 qt = 6 pt = 12 c = 96 fl oz<br>96 &divide; 6 = <b>16 boxes</b>`]
 ];
 // extra practice: random conversions built from the page 47 table
 const CH=[
@@ -150,7 +149,7 @@ function show(){const q=Q[cur],s=st[cur];
  $('unit').textContent=q[3];$('ans').value=s.val;light([]);
  const fb=$('fb');fb.className='fb';$('steps').style.display='none';
  if(s.done){fb.className='fb '+(s.ok?'ok':'bad');fb.innerHTML=s.ok?'Correct!':'Here is the method:';$('steps').innerHTML=q[6];$('steps').style.display='block';light(q[5])}
- $('dots').innerHTML=Q.map((x,i)=>`<div class="dot ${i==cur?'cur':''} ${st[i].done?(st[i].ok?'ok':'bad'):''}" data-i="${i}">${i<5?['E1','C','E2','C','C'][i]:i<BOOK?i-4:'P'+(i-BOOK+1)}</div>`).join('');
+ $('dots').innerHTML=Q.map((x,i)=>`<div class="dot ${i==cur?'cur':''} ${st[i].done?(st[i].ok?'ok':'bad'):''}" data-i="${i}">${i<BOOK?i+1:'P'+(i-BOOK+1)}</div>`).join('');
  $('score').textContent=`Score ${st.filter(x=>x.ok).length} / ${Q.length}`;$('ans').focus()}
 $('dots').onclick=e=>{if(e.target.dataset.i){cur=+e.target.dataset.i;show()}};
 $('check').onclick=()=>{const q=Q[cur],s=st[cur];if(s.done)return;const v=parse($('ans').value);s.val=$('ans').value;
