@@ -3,211 +3,295 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Convert Units 1-6</title>
+<title>Unit Explorer 1-6</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--teal:#1d6f8a;--teal2:#2a87a5;--head:#e8f4f8;--ink:#1d2433;--orange:#f07b22;--ok:#2b8a3e;--bad:#d6336c;--bg:#f4f7fb}
+:root{--teal:#1d6f8a;--head:#e8f4f8;--ink:#1f2340;--mul:#f76707;--div:#1c7ed6;--ok:#2f9e44;--bad:#e03131}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:"Segoe UI",Arial,sans-serif;color:var(--ink)}
-header{background:var(--teal);color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-header h1{font-size:22px;margin:0;flex:1}
-.pill{background:#ffffff26;border-radius:20px;padding:5px 14px;font-weight:600}
-main{max-width:1250px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1.05fr 1fr;gap:18px}
-@media(max-width:900px){main{grid-template-columns:1fr}}
-.card{background:#fff;border-radius:14px;box-shadow:0 2px 10px #0001;padding:18px 20px}
-.tag{color:var(--orange);font-size:24px;font-weight:300;margin:0 0 8px}
-.tag b{font-family:Georgia,serif;font-weight:900}
-.qtext{font-size:22px;line-height:1.55}
-.qtext .ask{font-weight:700;display:block;margin-top:8px}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-.opt{font-size:24px;font-weight:600;background:#fff;border:3px solid #c9d3df;border-radius:12px;padding:12px;min-height:72px;color:var(--ink)}
-.opt:hover{border-color:var(--teal2)}.opt.right{background:#ebfbee;border-color:var(--ok)}.opt.wrong{background:#fff0f6;border-color:var(--bad)}
-.opt .u{font-size:18px;color:#555;font-weight:400}
-.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.85em;margin:0 2px;line-height:1.05}
-.fr>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
-input{font-size:22px;padding:8px 12px;border:2px solid #c9d3df;border-radius:10px;width:200px}
-input:focus{outline:none;border-color:var(--teal2)}
-.unit{font-size:20px;font-weight:600;color:#555}
-button{font-size:17px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;cursor:pointer}
-.go{background:var(--teal);color:#fff}.hint{background:#fff3e6;color:#b45309}.nav{background:#e9eef4;color:#333}
-.fb{margin-top:14px;font-size:19px;border-radius:10px;padding:12px 14px;display:none;line-height:1.7}
-.fb.ok{display:block;background:#ebfbee;color:var(--ok)}.fb.bad{display:block;background:#fff0f6;color:var(--bad)}
-.steps{display:none;margin-top:10px;background:#f8f9fb;border-left:5px solid var(--orange);padding:10px 14px;font-size:19px;line-height:1.9}
-.dots{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
-.dot{width:30px;height:30px;border-radius:50%;background:#e2e8f0;display:grid;place-items:center;font-size:13px;font-weight:700;cursor:pointer}
-.dot.cur{outline:3px solid var(--teal2)}.dot.ok{background:#b2f2bb}.dot.bad{background:#fcc2d7}
-/* book-style conversion table */
-table.conv{width:100%;border-collapse:collapse;border:3px solid var(--teal);font-size:18px}
-.conv caption{background:var(--teal);color:#fff;font-size:22px;font-weight:700;padding:8px;caption-side:top;border:3px solid var(--teal);border-bottom:0}
-.conv th{background:var(--head);color:var(--teal);font-weight:700;padding:7px;border:2px solid var(--teal)}
-.conv td{border-left:2px solid var(--teal);border-right:2px solid var(--teal);padding:4px 10px;vertical-align:top}
-.conv tbody tr.grp td{border-top:2px solid var(--teal)}
-.conv td.eq{text-align:center;color:var(--teal);font-weight:700;width:40px}
-.conv td.type{width:150px}
+body{margin:0;font-family:Nunito,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(160deg,#fff4e6 0%,#e7f5ff 55%,#f3f0ff 100%);min-height:100vh}
+h1,h2,h3{font-family:"Baloo 2",Nunito,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.hero{background:linear-gradient(120deg,#1d6f8a,#5f3dc4);color:#fff;border-radius:24px;padding:24px 28px;position:relative;overflow:hidden;box-shadow:0 10px 30px #1d6f8a40}
+.hero h1{margin:0;font-size:clamp(28px,5vw,46px);line-height:1.05}
+.hero p{margin:6px 0 0;font-size:18px}
+.hero span.b{position:absolute;border-radius:50%;background:#ffffff1f}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.tab{font-family:"Baloo 2";font-size:20px;font-weight:700;border:0;border-radius:999px;padding:10px 22px;cursor:pointer;background:#fff;color:var(--ink);box-shadow:0 3px 0 #0001}
+.tab.on{background:var(--ink);color:#fff}
+.tab .n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#ffd43b;color:var(--ink);margin-right:6px;font-size:16px}
+.panel{display:none}.panel.on{display:block;animation:pop .35s}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+.card{background:#fff;border-radius:22px;padding:20px;box-shadow:0 8px 24px #1f234014}
+.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:600px){.rules{grid-template-columns:1fr}}
+.rule{border-radius:18px;padding:12px 16px;color:#fff;font-weight:800;font-size:19px}
+.rule small{display:block;font-weight:600;font-size:15px}
+.rule.m{background:linear-gradient(120deg,#f76707,#fd7e14)}.rule.d{background:linear-gradient(120deg,#1c7ed6,#4dabf7)}
+.rule b{font-family:"Baloo 2";font-size:28px}
+.tblwrap{position:relative}
+table.conv{width:100%;border-collapse:collapse;border:3px solid var(--teal);font-size:17px;background:#fff}
+.conv caption{background:var(--teal);color:#fff;font-size:22px;font-weight:800;padding:8px;border:3px solid var(--teal);border-bottom:0;font-family:"Baloo 2"}
+.conv th{background:var(--head);color:var(--teal);padding:6px;border:2px solid var(--teal)}
+.conv td{border-left:2px solid var(--teal);border-right:2px solid var(--teal);padding:5px 9px;height:40px}
+.conv tr.grp td{border-top:2px solid var(--teal)}
+.conv td.eq{text-align:center;color:var(--teal);font-weight:800;width:42px}
+.conv td.type{width:124px;vertical-align:top;font-weight:700}
 .conv tr.f{cursor:pointer;transition:background .2s}
 .conv tr.f:hover td:not(.type){background:#f1f8fb}
-.conv tr.f.lit td:not(.type){background:#fff3bf}
+.conv tr.f.sel td:not(.type){background:#fff3bf}
 .conv svg{display:block;margin-top:4px}
-.small{font-size:14px;color:#667;margin-top:8px}
-#end{display:none;text-align:center}
-#end h2{font-size:34px;color:var(--teal)}
+#kid{position:absolute;left:0;top:0;width:74px;pointer-events:none;transition:left 1.3s cubic-bezier(.5,0,.5,1);z-index:5;display:none}
+#kid .sign{position:absolute;left:50%;top:-30px;transform:translateX(-50%);background:#fff;border:3px solid var(--ink);border-radius:10px;padding:2px 8px;font-weight:800;white-space:nowrap;font-size:16px}
+#kid.hop svg{animation:hop .33s ease-in-out 4}
+@keyframes hop{50%{transform:translateY(-14px)}}
+#op{position:absolute;z-index:6;font-family:"Baloo 2";font-weight:800;font-size:30px;color:#fff;border-radius:16px;padding:0 14px;transform:scale(0);transition:transform .35s cubic-bezier(.3,1.6,.6,1);pointer-events:none}
+#op.show{transform:scale(1)}
+.ctrl{display:flex;flex-direction:column;gap:14px}
+.ctrl h3{margin:0;font-size:22px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:3px solid #dee2e6;background:#fff;border-radius:14px;padding:6px 14px;font-size:20px;font-weight:800;cursor:pointer;min-width:56px;color:var(--ink)}
+.chip.on{border-color:var(--ink);background:#ffd43b}
+.dirs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dir{border:0;border-radius:16px;padding:12px;color:#fff;font-size:17px;font-weight:800;cursor:pointer;font-family:Nunito}
+.dir.m{background:var(--mul)}.dir.d{background:var(--div)}.dir:active{transform:scale(.97)}
+.eqn{font-family:"Baloo 2";font-size:28px;font-weight:800;min-height:52px;text-align:center;background:#f8f9fa;border-radius:16px;padding:6px}
+.x{color:var(--mul);font-weight:800}.dv{color:var(--div);font-weight:800}
+.tip{background:#fff9db;border:2px dashed #f59f00;border-radius:14px;padding:10px 14px;font-size:16px}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.85em;margin:0 2px;line-height:1.05}
+.fr>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
+.qhead{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.badge{background:var(--ink);color:#fff;border-radius:999px;padding:4px 14px;font-weight:800}
+.lvl{background:#5f3dc4;color:#fff;border-radius:999px;padding:3px 12px;font-weight:800;font-size:15px}
+.hearts{font-size:24px;letter-spacing:2px}
+.prog{height:12px;background:#e9ecef;border-radius:99px;overflow:hidden;margin:12px 0}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#f76707,#ae3ec9,#1c7ed6);width:0;transition:width .4s}
+.timer{height:10px;background:#e9ecef;border-radius:99px;overflow:hidden}
+.timer i{display:block;height:100%;background:#2f9e44;width:100%}
+.qtext{font-size:23px;line-height:1.55;margin:10px 0 14px}
+.qtext .ask{display:block;font-weight:800;margin-top:6px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.opts{grid-template-columns:1fr}}
+.opt{display:flex;align-items:center;gap:12px;border:3px solid #dee2e6;background:#fff;border-radius:18px;padding:10px 14px;font-size:23px;font-weight:800;cursor:pointer;text-align:left;color:var(--ink);min-height:68px;font-family:Nunito;transition:transform .1s}
+.opt:hover{transform:translateY(-2px);border-color:#adb5bd}
+.opt .L{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;font-family:"Baloo 2";font-size:22px}
+.opt:nth-child(1) .L{background:#f76707}.opt:nth-child(2) .L{background:#1c7ed6}.opt:nth-child(3) .L{background:#ae3ec9}.opt:nth-child(4) .L{background:#2f9e44}
+.opt .u{font-size:17px;font-weight:600;color:#666}
+.opt.right{background:#ebfbee;border-color:var(--ok)}.opt.wrong{background:#fff5f5;border-color:var(--bad);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fb{margin-top:14px;border-radius:16px;padding:12px 16px;font-size:19px;line-height:1.8;display:none}
+.fb.ok{display:block;background:#ebfbee}.fb.bad{display:block;background:#fff5f5}
+.go{font-family:"Baloo 2";font-size:21px;font-weight:800;border:0;border-radius:16px;padding:10px 24px;cursor:pointer;background:var(--ink);color:#fff;margin-top:14px}
+.ex{font-size:21px;line-height:1.6}
+.step{opacity:0;transform:translateX(-10px);transition:.35s;margin:6px 0;padding:8px 14px;border-radius:12px;background:#f8f9fa;display:none}
+.step.on{opacity:1;transform:none;display:block}
+.big{font-family:"Baloo 2";font-size:44px;font-weight:800;text-align:center;margin:6px 0}
+.stars{font-size:46px;text-align:center;letter-spacing:6px}
+.pts{position:fixed;font-family:"Baloo 2";font-weight:800;font-size:34px;color:#f76707;pointer-events:none;animation:up 1s forwards;z-index:40}
+@keyframes up{to{transform:translateY(-60px);opacity:0}}
+#conf{position:fixed;inset:0;pointer-events:none;z-index:50}
 </style>
 </head>
 <body>
-<header><h1>Lesson 1-6 &middot; Convert Customary Measurement Units</h1><span class="pill" id="score"></span></header>
-<main>
-<section class="card" id="rule" style="grid-column:1/-1">
-<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><p class="tag" style="margin:0"><b>The Rule</b> Visit your neighbour</p><button class="nav" onclick="const r=document.getElementById('ruleSvg');r.style.display=r.style.display=='none'?'block':'none'">Show / hide</button></div>
-<div id="ruleSvg"></div>
+<canvas id="conf"></canvas>
+<div class="wrap">
+<div class="hero"><span class="b" style="width:180px;height:180px;right:-40px;top:-60px"></span><span class="b" style="width:90px;height:90px;right:160px;bottom:-30px"></span>
+<h1>Unit Explorer &#x1F9ED;</h1><p>Lesson 1-6 &middot; Convert Customary Measurement Units</p></div>
+
+<div class="tabs">
+<button class="tab on" data-p="learn"><span class="n">1</span>Watch &amp; Learn</button>
+<button class="tab" data-p="drill"><span class="n">2</span>Speed Drill</button>
+<button class="tab" data-p="examples"><span class="n">3</span>Extra Examples</button>
+<button class="tab" data-p="quiz"><span class="n">4</span>Challenge Game</button>
+</div>
+
+<section class="panel on" id="learn">
+<div class="rules">
+<div class="rule m"><b>Larger &rarr; smaller &nbsp;&times;</b><small>a big unit breaks into MANY small ones, so the number gets BIGGER</small></div>
+<div class="rule d"><b>Smaller &rarr; larger &nbsp;&divide;</b><small>small units pack into FEW big ones, so the number gets SMALLER</small></div>
+</div>
+<div class="grid">
+<div class="card"><div class="tblwrap" id="tw1"></div></div>
+<div class="card ctrl">
+<h3>&#x1F449; 1. Tap a row in the table</h3>
+<div class="tip" id="rowinfo"></div>
+<h3>2. Choose how many</h3>
+<div class="chips" id="nums"></div>
+<h3>3. Send the explorer!</h3>
+<div class="dirs">
+<button class="dir m" id="goM">Larger &rarr; Smaller<br>&times; MULTIPLY</button>
+<button class="dir d" id="goD">Smaller &rarr; Larger<br>&divide; DIVIDE</button>
+</div>
+<div class="eqn" id="eqn">&nbsp;</div>
+<div class="tip">&#x26A1; <b>Fast trick:</b> find the row with both units. Its number is your <b>magic number</b>. Going to the <b>smaller</b> unit? <span class="x">&times;</span> it. Going to the <b>larger</b> unit? <span class="dv">&divide;</span> it. Units not in the same row? Don't jump: visit each neighbour, one step at a time.</div>
+</div>
+</div>
 </section>
-<section class="card" id="qcard">
-  <p class="tag" id="tag"></p>
-  <div class="qtext" id="qtext"></div>
-  <div class="opts" id="opts"></div>
-  <div class="row"><button class="hint" id="hintb">Hint: light up the table</button><button class="nav" id="prev">&larr; Back</button><button class="nav" id="next">Next &rarr;</button></div>
-  <div class="small">Choose the correct answer.</div>
-  <div class="fb" id="fb"></div>
-  <div class="steps" id="steps"></div>
-  <div class="dots" id="dots"></div>
+
+<section class="panel" id="drill">
+<div class="grid">
+<div class="card">
+<div class="qhead"><h2 style="margin:0">&#x26A1; Multiply or divide?</h2><span class="badge" id="dstat">Streak 0</span></div>
+<div class="prog"><i id="dbar"></i></div>
+<div class="qtext" id="dq"></div>
+<div class="opts" id="dopts"></div>
+<div class="fb" id="dfb"></div>
+</div>
+<div class="card"><div class="tblwrap" id="tw2"></div></div>
+</div>
 </section>
-<section class="card" id="end"></section>
-<section class="card">
-<table class="conv">
-<caption>Customary Conversions</caption>
-<thead><tr><th>Type of Measure</th><th>Larger Unit</th><th>&rarr;</th><th>Smaller Unit</th></tr></thead>
-<tbody>
-<tr class="f grp" data-k="ft"><td class="type" rowspan="3">Length
-<svg width="130" height="46" viewBox="0 0 130 46"><g transform="rotate(-18 65 23)"><rect x="4" y="16" width="122" height="16" rx="2" fill="#f5c542" stroke="#b8860b"/><g stroke="#333" stroke-width="1.5"><line x1="16" y1="16" x2="16" y2="23"/><line x1="30" y1="16" x2="30" y2="23"/><line x1="44" y1="16" x2="44" y2="23"/><line x1="58" y1="16" x2="58" y2="23"/><line x1="72" y1="16" x2="72" y2="23"/><line x1="86" y1="16" x2="86" y2="23"/><line x1="100" y1="16" x2="100" y2="23"/><line x1="114" y1="16" x2="114" y2="23"/></g></g></svg></td><td>1 foot (ft)</td><td class="eq">=</td><td>12 inches (in.)</td></tr>
-<tr class="f" data-k="yd"><td>1 yard (yd)</td><td class="eq">=</td><td>3 feet</td></tr>
-<tr class="f" data-k="mi"><td>1 mile (mi)</td><td class="eq">=</td><td>5,280 feet</td></tr>
-<tr class="f grp" data-k="lb"><td class="type" rowspan="2">Weight
-<svg width="130" height="46" viewBox="0 0 130 46"><rect x="8" y="10" width="40" height="5" rx="2" fill="#5bb5d6"/><rect x="82" y="10" width="40" height="5" rx="2" fill="#5bb5d6"/><rect x="26" y="15" width="4" height="8" fill="#2d4f86"/><rect x="100" y="15" width="4" height="8" fill="#2d4f86"/><rect x="20" y="20" width="90" height="5" fill="#2d4f86"/><path d="M50 44 L56 24 H74 L80 44Z" fill="#2d4f86"/></svg></td><td>1 pound (lb)</td><td class="eq">=</td><td>16 ounces (oz)</td></tr>
-<tr class="f" data-k="T"><td>1 ton (T)</td><td class="eq">=</td><td>2,000 pounds</td></tr>
-<tr class="f grp" data-k="c"><td class="type" rowspan="4">Capacity
-<svg width="90" height="70" viewBox="0 0 90 70"><path d="M14 6 H62 V64 H14Z" fill="#e7f5ff" stroke="#9aa9b8" stroke-width="2"/><rect x="15" y="30" width="46" height="33" fill="#74c0fc"/><path d="M62 16 q20 2 18 18 q-2 14 -18 14" fill="none" stroke="#9aa9b8" stroke-width="4"/><g stroke="#333" stroke-width="1.5"><line x1="20" y1="14" x2="30" y2="14"/><line x1="20" y1="24" x2="28" y2="24"/><line x1="20" y1="34" x2="30" y2="34"/><line x1="20" y1="44" x2="28" y2="44"/><line x1="20" y1="54" x2="30" y2="54"/></g></svg></td><td>1 cup (c)</td><td class="eq">=</td><td>8 fluid ounces (fl oz)</td></tr>
-<tr class="f" data-k="pt"><td>1 pint (pt)</td><td class="eq">=</td><td>2 cups</td></tr>
-<tr class="f" data-k="qt"><td>1 quart (qt)</td><td class="eq">=</td><td>2 pints</td></tr>
-<tr class="f" data-k="gal"><td>1 gallon (gal)</td><td class="eq">=</td><td>4 quarts</td></tr>
-</tbody></table>
-<div class="small">Tap a row to highlight it while you work.</div>
+
+<section class="panel" id="examples">
+<div class="grid">
+<div class="card ex" id="exbox"></div>
+<div class="card"><div class="tblwrap" id="tw3"></div></div>
+</div>
 </section>
-</main>
+
+<section class="panel" id="quiz">
+<div class="grid">
+<div class="card" id="qcard"></div>
+<div class="card"><div class="tblwrap" id="tw4"></div></div>
+</div>
+</section>
+</div>
+
 <script>
 const F=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
-const Q=[
-['<b>Question 1</b> Larger to smaller',`Noura makes 1${F(1,2)} gallons of laban for a family lunch.`,'How many cups of laban is that?','cups',24,['gal','qt','pt'],
- `1${F(1,2)} gal &times; 4 = 6 qt<br>6 qt &times; 2 = 12 pt<br>12 pt &times; 2 = <b>24 cups</b>`],
-['<b>Question 2</b>',`A box of dates weighs ${F(1,2)} pound.`,'How many ounces is that?','oz',8,['lb'],`${F(1,2)} &times; 16 = <b>8 oz</b>`],
-['<b>Question 3</b> Smaller to larger','A water tanker truck in Al Khobar weighs 13,000 pounds.','How many tons is that?','T',6.5,['T'],`13,000 &divide; 2,000 = <b>6.5 T</b> (6${F(1,2)} T)`],
-['<b>Question 4</b>','Sara buys 90 inches of fabric for a costume.','How many yards is that?','yd',2.5,['ft','yd'],`1 yd = 3 ft = 36 in.<br>90 &divide; 36 = <b>2.5 yd</b> (2${F(1,2)} yd)`],
-['<b>Question 5</b>','Reem drank 5 glasses of water with 12 fluid ounces in each. Her goal is 3 quarts.','How many more fluid ounces does she need?','fl oz',36,['qt','pt','c'],
- `3 qt = 6 pt = 12 c = 96 fl oz<br>She drank 5 &times; 12 = 60 fl oz<br>96 &minus; 60 = <b>36 fl oz</b>`],
-['<b>Question 6</b>',`Lama made 2${F(1,4)} quarts of mango juice.`,'How many fluid ounces is that?','fl oz',72,['qt','pt','c'],
- `2${F(1,4)} qt &times; 2 = 4${F(1,2)} pt<br>4${F(1,2)} pt &times; 2 = 9 c<br>9 c &times; 8 = <b>72 fl oz</b>`],
-['<b>Question 7</b>','Maryam walked 1.5 miles along the Corniche.','How many yards did she walk?','yd',2640,['mi','yd'],
- `1.5 &times; 5,280 = 7,920 ft<br>7,920 &divide; 3 = <b>2,640 yd</b>`],
-['<b>Question 8</b>',`A recipe needs ${F(1,4)} gallon of milk.`,'How many cups is that?','cups',4,['gal','qt','pt'],
- `${F(1,4)} &times; 4 = 1 qt<br>1 qt &times; 2 = 2 pt<br>2 pt &times; 2 = <b>4 cups</b>`],
-['<b>Question 9</b>',`A camel can weigh ${F(3,4)} ton.`,'How many ounces can it weigh?','oz',24000,['T','lb'],
- `${F(3,4)} &times; 2,000 = 1,500 lb<br>1,500 &times; 16 = <b>24,000 oz</b>`],
-['<b>Question 10</b>','A small car weighs 40,000 ounces.','How many tons is that?','T',1.25,['lb','T'],
- `40,000 &divide; 16 = 2,500 lb<br>2,500 &divide; 2,000 = <b>1.25 T</b> (1${F(1,4)} T)`],
-['<b>Question 11</b>','A school hallway is 1,080 inches long.','How many yards long is it?','yd',30,['ft','yd'],
- `1 yd = 36 in.<br>1,080 &divide; 36 = <b>30 yd</b>`],
-['<b>Question 12</b>','A garden water tank holds 3,200 fluid ounces.','How many gallons does it hold?','gal',25,['c','pt','qt','gal'],
- `3,200 &divide; 8 = 400 c<br>400 &divide; 2 = 200 pt<br>200 &divide; 2 = 100 qt<br>100 &divide; 4 = <b>25 gal</b>`],
-['<b>Question 13</b>','A cake recipe uses 40 fluid ounces of milk.','How many pints is that?','pt',2.5,['c','pt'],
- `40 &divide; 8 = 5 c<br>5 &divide; 2 = <b>2.5 pt</b> (2${F(1,2)} pt)`],
-['<b>Question 14</b>',`Each bag of rice weighs 5 pounds.`,`How many bags weigh ${F(1,2)} ton altogether?`,'bags',200,['T'],
- `${F(1,2)} &times; 2,000 = 1,000 lb<br>1,000 &divide; 5 = <b>200 bags</b>`],
-['<b>Question 15</b>','A juice box holds 6 fluid ounces. The class needs 3 quarts of juice.','How many juice boxes are needed?','boxes',16,['qt','pt','c'],
- `3 qt = 6 pt = 12 c = 96 fl oz<br>96 &divide; 6 = <b>16 boxes</b>`]
-];
-// extra practice: random conversions built from the page 47 table
-const CH=[
- {u:['inches','feet','yards'],k:['ft','yd'],f:[12,3],ctx:['A ribbon is','A shelf is','A garden path is']},
- {u:['feet','miles'],k:['mi'],f:[5280],ctx:['A running track loop is','A bike trail is']},
- {u:['ounces','pounds','tons'],k:['lb','T'],f:[16,2000],ctx:['A bag of rice weighs','A baby camel weighs','A truck load weighs']},
- {u:['fluid ounces','cups','pints','quarts','gallons'],k:['c','pt','qt','gal'],f:[8,2,2,4],ctx:['A jug holds','A water cooler holds','A pot of soup holds']}];
-const ABBR={'inches':'in.','feet':'ft','yards':'yd','miles':'mi','ounces':'oz','pounds':'lb','tons':'T','fluid ounces':'fl oz','cups':'c','pints':'pt','quarts':'qt','gallons':'gal'};
-const rnd=a=>a[Math.floor(Math.random()*a.length)];
-function nice(x){x=Math.round(x*1e6)/1e6;const w=Math.floor(x),r=x-w,t=Math.round(r*12);const fr=Math.abs(r*12-t)<1e-4?{6:[1,2],3:[1,4],9:[3,4],4:[1,3],8:[2,3]}[t]:null;
- if(r<1e-6)return w.toLocaleString();return fr?(w?w.toLocaleString():'')+F(...fr):x.toLocaleString()}
-function gen(){const c=rnd(CH);let i=Math.floor(Math.random()*c.u.length),j;do j=Math.floor(Math.random()*c.u.length);while(j==i||Math.abs(i-j)>2);
- const lo=Math.min(i,j),hi=Math.max(i,j);let mult=1;for(let t=lo;t<hi;t++)mult*=c.f[t];
- const big=rnd([1,2,3,4,5,6,8,10,1.5,2.5,0.5,0.25,0.75]);const smallV=big*mult;
- const down=i>j;// from larger (i) to smaller (j)
- const from=down?big:smallV,to=down?smallV:big;let steps=[],v=from;
- if(down)for(let t=i-1;t>=j;t--){const n=v*c.f[t];steps.push(`${nice(v)} ${ABBR[c.u[t+1]]} &times; ${c.f[t].toLocaleString()} = ${nice(n)} ${ABBR[c.u[t]]}`);v=n}
- else for(let t=i;t<j;t++){const n=v/c.f[t];steps.push(`${nice(v)} ${ABBR[c.u[t]]} &divide; ${c.f[t].toLocaleString()} = ${nice(n)} ${ABBR[c.u[t+1]]}`);v=n}
- steps[steps.length-1]=steps[steps.length-1].replace(/= (.*)$/,'= <b>$1</b>');
- steps.unshift(down?'Larger &rarr; smaller: <b>multiply</b>':'Smaller &rarr; larger: <b>divide</b>');
- const keys=c.k.slice(lo,hi);
- return ['<b>Extra practice</b>',`${rnd(c.ctx)} ${nice(from)} ${c.u[i]}.`,`How many ${c.u[j]} is that?`,ABBR[c.u[j]],to,keys,steps.join('<br>')]}
-const BOOK=Q.length;for(let n=0;n<10;n++)Q.push(gen());
 const $=id=>document.getElementById(id);
-let cur=0;const st=Q.map(()=>({done:false,ok:false,tries:0,val:''}));
-function parse(s){s=s.replace(/,/g,'').trim();let m;
- if(m=s.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)$/))return +m[1]+m[2]/m[3];
- if(m=s.match(/^(-?\d*\.?\d+)\s*\/\s*(\d*\.?\d+)$/))return m[1]/m[2];
- if(/^-?\d*\.?\d+$/.test(s))return +s;return NaN}
-function light(keys){document.querySelectorAll('tr.f').forEach(r=>r.classList.toggle('lit',keys.includes(r.dataset.k)))}
-function show(){const q=Q[cur],s=st[cur];
- $('tag').innerHTML=q[0];$('qtext').innerHTML=q[1]+(q[2]?`<span class="ask">${q[2]}</span>`:'');
- light([]);if(!s.opts)s.opts=options(q[4]);
- $('opts').innerHTML=s.opts.map((v,k)=>`<button class="opt ${s.done&&Math.abs(v-q[4])<1e-6?'right':''} ${s.done&&s.pick===k&&!s.ok?'wrong':''}" data-k="${k}">${nice(v)} <span class="u">${q[3]}</span></button>`).join('');
- const fb=$('fb');fb.className='fb';$('steps').style.display='none';
- if(s.done){fb.className='fb '+(s.ok?'ok':'bad');fb.innerHTML=s.ok?'Correct!':'Here is the method:';$('steps').innerHTML=q[6];$('steps').style.display='block';light(q[5])}
- $('dots').innerHTML=Q.map((x,i)=>`<div class="dot ${i==cur?'cur':''} ${st[i].done?(st[i].ok?'ok':'bad'):''}" data-i="${i}">${i<BOOK?i+1:'P'+(i-BOOK+1)}</div>`).join('');
- $('score').textContent=`Score ${st.filter(x=>x.ok).length} / ${Q.length}`}
-$('dots').onclick=e=>{if(e.target.dataset.i){cur=+e.target.dataset.i;show()}};
-function clean(x){const t=Math.round(x*12);return x>0&&x<1e6&&Math.abs(x*12-t)<1e-6&&[0,3,4,6,8,9].includes(t%12)}
-function options(a){const fs=[2,3,4,8,12,16,36,2000,5280],c=new Set();
- fs.forEach(f=>{[a*f,a/f].forEach(x=>{if(clean(x)&&Math.abs(x-a)>1e-6)c.add(Math.round(x*12)/12)})});
- [a+1,a*10,a+a/2].forEach(x=>{if(clean(x))c.add(Math.round(x*12)/12)});
- const w=[...c].sort(()=>Math.random()-.5).slice(0,3);w.push(a);return w.sort(()=>Math.random()-.5)}
-$('opts').onclick=e=>{const b=e.target.closest('.opt');if(!b)return;const q=Q[cur],s=st[cur];if(s.done)return;
- s.pick=+b.dataset.k;s.done=true;s.ok=Math.abs(s.opts[s.pick]-q[4])<1e-6;show();if(st.every(x=>x.done))setTimeout(end,1500)};
-$('hintb').onclick=()=>light(Q[cur][5]);
-$('next').onclick=()=>{cur=(cur+1)%Q.length;show()};$('prev').onclick=()=>{cur=(cur+Q.length-1)%Q.length;show()};
-document.querySelectorAll('tr.f').forEach(r=>r.onclick=()=>r.classList.toggle('lit'));
-function end(){const n=st.filter(x=>x.ok).length;$('qcard').style.display='none';const e=$('end');e.style.display='block';
- e.innerHTML=`<h2>Finished!</h2><p style="font-size:24px">You got <b>${n} / ${Q.length}</b></p><p style="font-size:18px">Larger &rarr; smaller: <b>multiply</b>.<br>Smaller &rarr; larger: <b>divide</b>.</p><button class="go" onclick="location.reload()">Start again</button> <button class="hint" onclick="more()">10 more practice questions</button>`}
-function more(){const s=Q.length;for(let n=0;n<10;n++){Q.push(gen());st.push({done:false,ok:false,tries:0,val:''})}cur=s;$('end').style.display='none';$('qcard').style.display='block';show()}
-(function(){
-const rows=[
- {name:'Capacity',col:'#1c7ed6',u:['gallon','quart','pint','cup','fl oz'],f:[4,2,2,8]},
- {name:'Weight',col:'#7048e8',u:['ton','pound','ounce'],f:['2,000',16]},
- {name:'Length',col:'#2b8a3e',u:['mile','foot','inch'],f:['5,280',12],extra:true}];
-const W=1100;let s=`<svg viewBox="0 0 ${W} 700" width="100%" style="max-width:1100px;display:block;margin:auto;font-family:Segoe UI,Arial">
-<defs><marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#e8590c"/></marker>
-<marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#1864ab"/></marker></defs>
-<rect x="10" y="8" width="530" height="62" rx="14" fill="#fff4e6" stroke="#e8590c" stroke-width="3"/>
-<text x="275" y="36" text-anchor="middle" font-size="22" font-weight="800" fill="#e8590c">LARGER &#8594; SMALLER = MULTIPLY &#215;</text>
-<text x="275" y="60" text-anchor="middle" font-size="16" fill="#7a3e00">a big unit breaks into MANY small units</text>
-<rect x="560" y="8" width="530" height="62" rx="14" fill="#e7f5ff" stroke="#1864ab" stroke-width="3"/>
-<text x="825" y="36" text-anchor="middle" font-size="22" font-weight="800" fill="#1864ab">SMALLER &#8594; LARGER = DIVIDE &#247;</text>
-<text x="825" y="60" text-anchor="middle" font-size="16" fill="#0b3d6b">many small units pack into FEW big units</text>`;
-let y=100;
-rows.forEach(r=>{const n=r.u.length,gap=(W-280)/(n-1);
- s+=`<text x="12" y="${y+80}" font-size="20" font-weight="800" fill="${r.col}">${r.name}</text>`;
- r.u.forEach((u,i)=>{const x=150+i*gap,sz=78-i*(30/(n-1)),cy=y+80;
-  // a little house that shrinks as the unit gets smaller
-  s+=`<g><path d="M${x-sz/2},${cy-sz/4} L${x},${cy-sz*0.75} L${x+sz/2},${cy-sz/4}Z" fill="${r.col}"/>
-  <rect x="${x-sz/2+4}" y="${cy-sz/4}" width="${sz-8}" height="${sz*0.62}" rx="5" fill="#fff" stroke="${r.col}" stroke-width="3"/>
-  <text x="${x}" y="${cy+sz*0.17}" text-anchor="middle" font-size="${Math.max(13,sz/4.6)}" font-weight="700" fill="#1d2433">${u}</text></g>`;
-  if(i<n-1){const x1=x+sz/2+6,x2=150+(i+1)*gap-(78-(i+1)*(30/(n-1)))/2-6,mx=(x1+x2)/2;
-   s+=`<path d="M${x1},${cy-28} Q${mx},${cy-70} ${x2},${cy-28}" fill="none" stroke="#e8590c" stroke-width="3.5" marker-end="url(#ah)"/>
-   <rect x="${mx-38}" y="${cy-80}" width="76" height="26" rx="13" fill="#e8590c"/><text x="${mx}" y="${cy-61}" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">&#215; ${r.f[i]}</text>
-   <path d="M${x2},${cy+46} Q${mx},${cy+88} ${x1},${cy+46}" fill="none" stroke="#1864ab" stroke-width="3.5" marker-end="url(#ab)"/>
-   <rect x="${mx-38}" y="${cy+64}" width="76" height="26" rx="13" fill="#1864ab"/><text x="${mx}" y="${cy+83}" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">&#247; ${r.f[i]}</text>`}});
- if(r.extra)s+=`<text x="${W-12}" y="${y+178}" text-anchor="end" font-size="15" fill="#555">also: 1 yard = 3 feet &#160;&#160;(yard &#8596; foot: &#215; 3 / &#247; 3)</text>`;
- y+=185});
-// don't jump banner
-s+=`<rect x="10" y="${y+2}" width="${W-20}" height="46" rx="23" fill="#fff9db" stroke="#f08c00" stroke-width="2.5"/>
-<text x="${W/2}" y="${y+33}" text-anchor="middle" font-size="21" font-weight="800" fill="#d9480f">Don't jump! Always visit your neighbour, one step at a time: gallon &#8594; quart &#8594; pint &#8594; cup</text>`;
-s+='</svg>';document.getElementById('ruleSvg').innerHTML=s})();
-show();
+const ROWS=[
+ {k:'ft',big:'1 foot (ft)',small:'12 inches (in.)',f:12,B:'ft',S:'in.',g:'Length'},
+ {k:'yd',big:'1 yard (yd)',small:'3 feet',f:3,B:'yd',S:'ft',g:'Length'},
+ {k:'mi',big:'1 mile (mi)',small:'5,280 feet',f:5280,B:'mi',S:'ft',g:'Length'},
+ {k:'lb',big:'1 pound (lb)',small:'16 ounces (oz)',f:16,B:'lb',S:'oz',g:'Weight'},
+ {k:'T',big:'1 ton (T)',small:'2,000 pounds',f:2000,B:'T',S:'lb',g:'Weight'},
+ {k:'c',big:'1 cup (c)',small:'8 fluid ounces (fl oz)',f:8,B:'c',S:'fl oz',g:'Capacity'},
+ {k:'pt',big:'1 pint (pt)',small:'2 cups',f:2,B:'pt',S:'c',g:'Capacity'},
+ {k:'qt',big:'1 quart (qt)',small:'2 pints',f:2,B:'qt',S:'pt',g:'Capacity'},
+ {k:'gal',big:'1 gallon (gal)',small:'4 quarts',f:4,B:'gal',S:'qt',g:'Capacity'}];
+const ICON={Length:'<svg width="112" height="40" viewBox="0 0 130 46"><g transform="rotate(-18 65 23)"><rect x="4" y="16" width="122" height="16" rx="2" fill="#f5c542" stroke="#b8860b"/><g stroke="#333" stroke-width="1.5"><line x1="16" y1="16" x2="16" y2="23"/><line x1="30" y1="16" x2="30" y2="23"/><line x1="44" y1="16" x2="44" y2="23"/><line x1="58" y1="16" x2="58" y2="23"/><line x1="72" y1="16" x2="72" y2="23"/><line x1="86" y1="16" x2="86" y2="23"/><line x1="100" y1="16" x2="100" y2="23"/><line x1="114" y1="16" x2="114" y2="23"/></g></g></svg>',
+ Weight:'<svg width="112" height="40" viewBox="0 0 130 46"><rect x="8" y="10" width="40" height="5" rx="2" fill="#5bb5d6"/><rect x="82" y="10" width="40" height="5" rx="2" fill="#5bb5d6"/><rect x="26" y="15" width="4" height="8" fill="#2d4f86"/><rect x="100" y="15" width="4" height="8" fill="#2d4f86"/><rect x="20" y="20" width="90" height="5" fill="#2d4f86"/><path d="M50 44 L56 24 H74 L80 44Z" fill="#2d4f86"/></svg>',
+ Capacity:'<svg width="80" height="62" viewBox="0 0 90 70"><path d="M14 6 H62 V64 H14Z" fill="#e7f5ff" stroke="#9aa9b8" stroke-width="2"/><rect x="15" y="30" width="46" height="33" fill="#74c0fc"/><path d="M62 16 q20 2 18 18 q-2 14 -18 14" fill="none" stroke="#9aa9b8" stroke-width="4"/><g stroke="#333" stroke-width="1.5"><line x1="20" y1="14" x2="30" y2="14"/><line x1="20" y1="24" x2="28" y2="24"/><line x1="20" y1="34" x2="30" y2="34"/><line x1="20" y1="44" x2="28" y2="44"/><line x1="20" y1="54" x2="30" y2="54"/></g></svg>'};
+function tableHTML(){let h='<table class="conv"><caption>Customary Conversions</caption><thead><tr><th>Type of Measure</th><th>Larger Unit</th><th>&rarr;</th><th>Smaller Unit</th></tr></thead><tbody>',last='';
+ ROWS.forEach(r=>{const first=r.g!==last;last=r.g;const span=ROWS.filter(x=>x.g==r.g).length;
+  h+=`<tr class="f${first?' grp':''}" data-k="${r.k}">${first?`<td class="type" rowspan="${span}">${r.g}${ICON[r.g]}</td>`:''}<td class="L">${r.big}</td><td class="eq">=</td><td class="S">${r.small}</td></tr>`});
+ return h+'</tbody></table>'}
+['tw1','tw2','tw3','tw4'].forEach(id=>$(id).innerHTML=tableHTML());
+function light(keys){document.querySelectorAll('#tw2 tr.f,#tw3 tr.f,#tw4 tr.f').forEach(r=>r.classList.toggle('sel',keys.includes(r.dataset.k)))}
+function nice(x){x=Math.round(x*1e6)/1e6;const w=Math.floor(x),r=x-w,t=Math.round(r*12);
+ const fr=Math.abs(r*12-t)<1e-4?{6:[1,2],3:[1,4],9:[3,4],4:[1,3],8:[2,3]}[t]:null;
+ if(r<1e-6)return w.toLocaleString();return fr?(w?w.toLocaleString():'')+F(...fr):x.toLocaleString()}
+let AC;function beep(f,d=.12,type='sine'){try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.value=.12;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d)}catch(e){}}
+const yay=()=>{beep(660);setTimeout(()=>beep(880),110);setTimeout(()=>beep(1100,.2),220)},nope=()=>beep(180,.25,'square');
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x==t));
+ document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==t.dataset.p));light([]);if(t.dataset.p=='learn')setTimeout(()=>place('L'),50)});
+
+// ---------- 1 LEARN ----------
+const KID=`<div class="sign" id="sign"></div><svg viewBox="0 0 74 96" width="74"><ellipse cx="37" cy="92" rx="20" ry="4" fill="#0002"/>
+<rect x="22" y="48" width="30" height="30" rx="10" fill="#7048e8"/><rect x="14" y="50" width="12" height="22" rx="6" fill="#f59f00"/>
+<rect x="25" y="74" width="9" height="16" rx="4" fill="#1f2340"/><rect x="40" y="74" width="9" height="16" rx="4" fill="#1f2340"/>
+<circle cx="37" cy="30" r="20" fill="#ffd8a8"/><path d="M15 22 h44 q-2 -14 -22 -14 q-20 0 -22 14z" fill="#e03131"/><rect x="40" y="19" width="24" height="5" rx="2.5" fill="#c92a2a"/>
+<circle cx="30" cy="31" r="3" fill="#1f2340"/><circle cx="44" cy="31" r="3" fill="#1f2340"/><path d="M30 39 q7 6 14 0" stroke="#1f2340" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<circle cx="25" cy="37" r="3" fill="#ffa8a8"/><circle cx="49" cy="37" r="3" fill="#ffa8a8"/></svg>`;
+const tw1=$('tw1');tw1.insertAdjacentHTML('beforeend',`<div id="kid">${KID}</div><div id="op"></div>`);
+let selRow=ROWS[8],num=3,busy=false;
+$('nums').innerHTML=[1,2,3,5,0.5,0.25].map(n=>`<button class="chip${n==3?' on':''}" data-n="${n}">${nice(n)}</button>`).join('');
+$('nums').onclick=e=>{const b=e.target.closest('.chip');if(!b||busy)return;num=+b.dataset.n;document.querySelectorAll('#nums .chip').forEach(c=>c.classList.toggle('on',c==b))};
+function pickRow(k){selRow=ROWS.find(r=>r.k==k);tw1.querySelectorAll('tr.f').forEach(r=>r.classList.toggle('sel',r.dataset.k==k));
+ $('rowinfo').innerHTML=`<b>1 ${selRow.B} = ${selRow.f.toLocaleString()} ${selRow.S}</b> &nbsp;&middot;&nbsp; magic number: <b>${selRow.f.toLocaleString()}</b>`;$('eqn').innerHTML='&nbsp;';place('L')}
+tw1.querySelectorAll('tr.f').forEach(r=>r.onclick=()=>{if(!busy)pickRow(r.dataset.k)});
+function cellPos(side){const c=tw1.querySelector(`tr[data-k="${selRow.k}"] td.${side}`),w=tw1.getBoundingClientRect(),b=c.getBoundingClientRect();
+ return{x:b.left-w.left+b.width/2-37,y:b.top-w.top+b.height/2-80}}
+function place(side,label){const k=$('kid'),p=cellPos(side);k.style.transition='none';k.style.display='block';k.style.left=p.x+'px';k.style.top=p.y+'px';
+ $('sign').innerHTML=label||`1 ${selRow.B}`;void k.offsetWidth;k.style.transition=''}
+function trip(mult){if(busy)return;busy=true;const r=selRow,f=r.f;
+ const from=mult?num:num*f,to=mult?num*f:num,fu=mult?r.B:r.S,tu=mult?r.S:r.B,sym=mult?'&times;':'&divide;',cls=mult?'x':'dv';
+ place(mult?'L':'S',`${nice(from)} ${fu}`);$('eqn').innerHTML=`${nice(from)} ${fu} <span class="${cls}">${sym} ${f.toLocaleString()}</span> = ?`;
+ const op=$('op'),eq=tw1.querySelector(`tr[data-k="${r.k}"] td.eq`),w=tw1.getBoundingClientRect(),b=eq.getBoundingClientRect();
+ op.style.background=mult?'var(--mul)':'var(--div)';op.innerHTML=`${sym} ${f.toLocaleString()}`;
+ setTimeout(()=>{op.style.left=(b.left-w.left+b.width/2-op.offsetWidth/2)+'px';op.style.top=(b.top-w.top-40)+'px';op.classList.add('show');beep(mult?520:400)},250);
+ setTimeout(()=>{const k=$('kid'),p=cellPos(mult?'S':'L');k.classList.add('hop');k.style.left=p.x+'px'},700);
+ setTimeout(()=>{$('kid').classList.remove('hop');$('sign').innerHTML=`${nice(to)} ${tu}`;op.classList.remove('show');yay();
+  $('eqn').innerHTML=`${nice(from)} ${fu} <span class="${cls}">${sym} ${f.toLocaleString()}</span> = ${nice(to)} ${tu}`;busy=false},2100)}
+$('goM').onclick=()=>trip(true);$('goD').onclick=()=>trip(false);
+setTimeout(()=>pickRow('gal'),300);addEventListener('resize',()=>{if(!busy&&$('learn').classList.contains('on'))place('L')});
+
+// ---------- 2 SPEED DRILL ----------
+let streak=0,best=0,dAns=0,dInfo=null,dLock=false;
+function drillQ(){dLock=false;const r=ROWS[Math.floor(Math.random()*ROWS.length)],down=Math.random()<.5,n=[2,3,4,5,6,10][Math.floor(Math.random()*6)];
+ const from=down?n:n*r.f,fu=down?r.B:r.S,tu=down?r.S:r.B,right=(down?'&times; ':'&divide; ')+r.f.toLocaleString();
+ const alt=ROWS.filter(x=>x.f!=r.f).sort(()=>Math.random()-.5);
+ const o=[right,(down?'&divide; ':'&times; ')+r.f.toLocaleString(),'&times; '+alt[0].f.toLocaleString(),'&divide; '+alt[1].f.toLocaleString()].sort(()=>Math.random()-.5);
+ dAns=o.indexOf(right);dInfo={k:r.k,txt:`1 ${r.B} = ${r.f.toLocaleString()} ${r.S}. ${down?'Larger &rarr; smaller, so multiply':'Smaller &rarr; larger, so divide'}: ${nice(from)} ${right} = <b>${nice(down?n*r.f:n)} ${tu}</b>`};
+ $('dq').innerHTML=`Change <b>${nice(from)} ${fu}</b> into <b>${tu}</b>.<span class="ask">What do you do?</span>`;
+ $('dopts').innerHTML=o.map((t,i)=>`<button class="opt" data-i="${i}"><span class="L">${'ABCD'[i]}</span>${t}</button>`).join('');$('dfb').className='fb'}
+$('dopts').onclick=e=>{const b=e.target.closest('.opt');if(!b||dLock)return;dLock=true;const ok=+b.dataset.i==dAns;
+ $('dopts').children[dAns].classList.add('right');if(!ok)b.classList.add('wrong');light([dInfo.k]);
+ streak=ok?streak+1:0;best=Math.max(best,streak);ok?yay():nope();
+ $('dstat').textContent=`Streak ${streak} · Best ${best}`;$('dbar').style.width=Math.min(100,streak*10)+'%';
+ $('dfb').className='fb '+(ok?'ok':'bad');$('dfb').innerHTML=(ok?'&#x2705; Yes! ':'&#x274C; Not quite. ')+dInfo.txt;
+ if(streak&&streak%10==0)confetti();setTimeout(()=>{light([]);drillQ()},ok?1700:3400)};
+drillQ();
+
+// ---------- 3 EXTRA EXAMPLES ----------
+const EX=[
+ {t:'Extra Example 1 &middot; Larger &rarr; Smaller',q:'Dana fills a cooler with <b>3 gallons</b> of water for a school trip. How many <b>cups</b> is that?',k:['gal','qt','pt'],
+  s:['Gallon &rarr; cup: larger to smaller, so we <span class="x">multiply</span>. Visit each neighbour!','3 gal <span class="x">&times; 4</span> = 12 qt','12 qt <span class="x">&times; 2</span> = 24 pt','24 pt <span class="x">&times; 2</span> = <b>48 cups</b>','Check: cups are small, so the number got bigger &#x2714;']},
+ {t:'Extra Example 2 &middot; Smaller &rarr; Larger',q:'A baby elephant weighs <b>4,000 pounds</b>. How many <b>tons</b> is that?',k:['T'],
+  s:['Pound &rarr; ton: smaller to larger, so we <span class="dv">divide</span>.','1 T = 2,000 lb, so the magic number is 2,000','4,000 lb <span class="dv">&divide; 2,000</span> = <b>2 T</b>','Check: tons are big, so the number got smaller &#x2714;']},
+ {t:'Extra Example 3 &middot; With a fraction',q:`Mona needs ${F(3,4)} <b>pound</b> of cheese. How many <b>ounces</b> is that?`,k:['lb'],
+  s:['Pound &rarr; ounce: larger to smaller, so we <span class="x">multiply</span>.',`${F(3,4)} lb <span class="x">&times; 16</span> = ${F(48,4)} oz`,'= <b>12 oz</b>',`Fast way: ${F(1,4)} of 16 is 4, so ${F(3,4)} of 16 is 3 &times; 4 = 12 &#x2714;`]}];
+let exI=0,exS=0;
+function drawEx(){const e=EX[exI];$('exbox').innerHTML=`<h2 style="margin:0 0 6px;color:#5f3dc4">${e.t}</h2><p>${e.q}</p>`+e.s.map((s,i)=>`<div class="step${i<exS?' on':''}">${s}</div>`).join('')+
+ `<div style="display:flex;gap:10px;flex-wrap:wrap">${exS<e.s.length?'<button class="go" id="exn">Next step &#x25B6;</button>':''}<button class="go" style="background:#5f3dc4" id="exo">${exI<EX.length-1?'Next example &rarr;':'Back to Example 1'}</button></div>`;
+ light(exS?e.k:[]);if($('exn'))$('exn').onclick=()=>{exS++;beep(600);drawEx()};$('exo').onclick=()=>{exI=(exI+1)%EX.length;exS=0;drawEx()}}
+drawEx();
+
+// ---------- 4 CHALLENGE GAME: 10 questions, A-D, timer, 3 hearts ----------
+const Q=[
+ {L:1,q:'A shelf is <b>5 feet</b> long.',a:'How many inches long is it?',u:'in.',o:[60,17,15,F(5,12)],c:0,k:['ft'],s:'Larger &rarr; smaller: 5 <span class="x">&times; 12</span> = <b>60 in.</b>'},
+ {L:1,q:`A bag of nuts weighs ${F(3,4)} <b>pound</b>.`,a:'How many ounces is that?',u:'oz',o:[48,3,12,64],c:2,k:['lb'],s:`Larger &rarr; smaller: ${F(3,4)} <span class="x">&times; 16</span> = <b>12 oz</b>`},
+ {L:1,q:'A truck carries <b>6,000 pounds</b> of sand.',a:'How many tons is that?',u:'T',o:[30,3,12,300],c:1,k:['T'],s:'Smaller &rarr; larger: 6,000 <span class="dv">&divide; 2,000</span> = <b>3 T</b>'},
+ {L:2,q:`A jug holds 2${F(1,2)} <b>gallons</b> of juice.`,a:'How many quarts is that?',u:'qt',o:['10','6'+F(1,2),'8',F(5,8)],c:0,k:['gal'],s:`Larger &rarr; smaller: 2${F(1,2)} <span class="x">&times; 4</span> = <b>10 qt</b>`},
+ {L:2,q:'A pot holds <b>2 quarts</b> of soup.',a:'How many cups is that?',u:'c',o:[4,F(1,2),8,16],c:2,k:['qt','pt'],s:'Visit your neighbour: 2 qt <span class="x">&times; 2</span> = 4 pt, then 4 pt <span class="x">&times; 2</span> = <b>8 c</b>'},
+ {L:2,q:'Hana\'s water bottle holds <b>32 fluid ounces</b>.',a:'How many quarts is that?',u:'qt',o:[4,1,2,256],c:1,k:['c','pt','qt'],s:'32 <span class="dv">&divide; 8</span> = 4 c, 4 <span class="dv">&divide; 2</span> = 2 pt, 2 <span class="dv">&divide; 2</span> = <b>1 qt</b>'},
+ {L:3,q:`Huda walks ${F(1,2)} <b>mile</b> to school.`,a:'How many yards is that?',u:'yd',o:['2,640','880','1,760','7,920'],c:1,k:['mi','yd'],s:`${F(1,2)} <span class="x">&times; 5,280</span> = 2,640 ft, then 2,640 <span class="dv">&divide; 3</span> = <b>880 yd</b>`},
+ {L:3,q:`A small boat weighs 1${F(1,2)} <b>tons</b>.`,a:'How many ounces is that?',u:'oz',o:['3,000','24,000','32,000','48,000'],c:3,k:['T','lb'],s:`1${F(1,2)} <span class="x">&times; 2,000</span> = 3,000 lb, then 3,000 <span class="x">&times; 16</span> = <b>48,000 oz</b>`},
+ {L:3,q:'A water cooler holds <b>3 gallons</b>.',a:'How many fluid ounces is that?',u:'fl oz',o:[96,384,48,192],c:1,k:['gal','qt','pt','c'],s:'3 gal &rarr; 12 qt &rarr; 24 pt &rarr; 48 c, then 48 <span class="x">&times; 8</span> = <b>384 fl oz</b>'},
+ {L:3,q:`Each juice box holds <b>8 fluid ounces</b>. The class needs 1${F(1,2)} <b>gallons</b> of juice.`,a:'How many juice boxes are needed?',u:'boxes',o:[12,6,24,48],c:2,k:['gal','qt','pt','c'],s:`1${F(1,2)} gal = 6 qt = 12 pt = 24 c = 192 fl oz, then 192 <span class="dv">&divide; 8</span> = <b>24 boxes</b>`}];
+const LVL={1:'Level 1 &middot; Warm-up',2:'Level 2 &middot; Two steps',3:'BOSS level &#x1F525;'},TIME=45;
+let qi,score,pts,hearts,locked,tLeft,tick;
+function startGame(){qi=0;score=0;pts=0;hearts=3;
+ $('qcard').innerHTML=`<div class="qhead"><span class="lvl" id="qlvl"></span><span class="hearts" id="qh"></span><span class="badge" id="qpts">0 pts</span></div>
+ <h2 style="margin:8px 0 0" id="qnum"></h2><div class="prog"><i id="qbar"></i></div><div class="timer"><i id="qt"></i></div>
+ <div class="qtext" id="qtext"></div><div class="opts" id="qopts"></div><div class="fb" id="qfb"></div><button class="go" id="qnext" style="display:none"></button>`;
+ $('qopts').onclick=e=>{const b=e.target.closest('.opt');if(b)answer(+b.dataset.i,b)};
+ $('qnext').onclick=()=>{if(hearts<=0||qi>=Q.length-1)finish();else{qi++;drawQ()}};drawQ()}
+function drawQ(){const q=Q[qi];locked=false;$('qnum').textContent=`Question ${qi+1} of ${Q.length}`;$('qlvl').innerHTML=LVL[q.L];
+ $('qbar').style.width=(qi/Q.length*100)+'%';$('qh').innerHTML='&#x2764;&#xFE0F;'.repeat(hearts)+'&#x1F90D;'.repeat(3-hearts);
+ $('qtext').innerHTML=`${q.q}<span class="ask">${q.a}</span>`;$('qfb').className='fb';$('qnext').style.display='none';light([]);
+ $('qopts').innerHTML=q.o.map((v,i)=>`<button class="opt" data-i="${i}"><span class="L">${'ABCD'[i]}</span>${typeof v=='number'?nice(v):v} <span class="u">${q.u}</span></button>`).join('');
+ tLeft=TIME;clearInterval(tick);const bar=$('qt');bar.style.width='100%';bar.style.background='#2f9e44';
+ tick=setInterval(()=>{tLeft-=.1;bar.style.width=Math.max(0,tLeft/TIME*100)+'%';bar.style.background=tLeft<10?'#e03131':tLeft<20?'#f59f00':'#2f9e44';if(tLeft<=0)answer(-1)},100)}
+function answer(i,btn){if(locked)return;locked=true;clearInterval(tick);const q=Q[qi],ok=i==q.c;
+ $('qopts').children[q.c].classList.add('right');if(btn&&!ok)btn.classList.add('wrong');
+ if(ok){score++;const p=100+Math.round(tLeft)*5+(q.L-1)*50;pts+=p;yay();if(btn){const r=btn.getBoundingClientRect(),d=document.createElement('div');d.className='pts';d.textContent='+'+p;d.style.left=r.left+r.width/2+'px';d.style.top=r.top+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}}
+ else{hearts--;nope()}
+ $('qpts').textContent=pts+' pts';$('qh').innerHTML='&#x2764;&#xFE0F;'.repeat(hearts)+'&#x1F90D;'.repeat(3-hearts);light(q.k);
+ $('qfb').className='fb '+(ok?'ok':'bad');$('qfb').innerHTML=(ok?'&#x2705; Correct! ':i<0?`&#x23F0; Time's up! The answer is <b>${'ABCD'[q.c]}</b>. `:`&#x274C; The answer is <b>${'ABCD'[q.c]}</b>. `)+q.s;
+ $('qnext').style.display='inline-block';$('qnext').textContent=hearts<=0?'Game over →':qi<Q.length-1?'Next →':'See my result'}
+function finish(){clearInterval(tick);light([]);const st=score>=9?3:score>=7?2:score>=4?1:0,won=hearts>0;
+ $('qcard').innerHTML=`<h2 style="text-align:center;margin:0">${won?'Challenge complete! &#x1F3C6;':'Out of hearts! &#x1F494;'}</h2><div class="stars">${'&#x2B50;'.repeat(st)}${'&#x2606;'.repeat(3-st)}</div>
+ <div class="big">${pts} pts</div><p style="text-align:center;font-size:20px">${score} correct out of ${won?Q.length:qi+1} questions</p>
+ <p style="text-align:center;font-size:19px">Larger &rarr; smaller: <b class="x">&times;</b> &nbsp;&nbsp; Smaller &rarr; larger: <b class="dv">&divide;</b><br>Don't jump. Visit your neighbour!</p>
+ <div style="text-align:center"><button class="go" id="again">Play again</button></div>`;$('again').onclick=startGame;if(won&&score>=7)confetti()}
+startGame();
+
+function confetti(){const c=$('conf'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+ const P=Array.from({length:160},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,v:2+Math.random()*4,r:4+Math.random()*6,h:Math.random()*360,s:Math.random()*6}));let t=0;
+ (function f(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.y+=p.v;p.x+=Math.sin((t+p.s)/12)*1.5;x.fillStyle=`hsl(${p.h},85%,60%)`;x.fillRect(p.x,p.y,p.r,p.r*.6)});
+  if(++t<220)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height)})()}
 </script>
 </body>
 </html>
